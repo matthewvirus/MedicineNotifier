@@ -6,6 +6,5 @@ data class PatientDataModel(
     var patientId: UUID = UUID.randomUUID(),
     var patientName: String = "",
     var patientSurname: String = "",
-    var prescribedMedicines: List<MedicineDataModel>,
     var patientStatus: Boolean = false
 )
