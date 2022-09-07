@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Medicine Notifier</string>
+    <string name="creating_of_new_patient">Creating of new patient</string>
+    <string name="patient_name">Имя пациента</string>
+    <string name="patient_surname">Фамилия пациента</string>
+    <string name="patient_status">Статус пациента</string>
+    <string name="healthy_patient">Здоров</string>
+    <string name="unhealthy_patient">Болен</string>
+    <string name="create_patient_btn">Создать пациента</string>
+    <string name="patient_status_desc">Patient status</string>
 </resources>
