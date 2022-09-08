@@ -3,9 +3,10 @@ package by.matthewvirus.medicinenotifier.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import by.matthewvirus.medicinenotifier.R
+import by.matthewvirus.medicinenotifier.ui.addpatient.AddPatientFragment
 import by.matthewvirus.medicinenotifier.ui.patientslist.PatientsListFragment
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), PatientsListFragment.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -19,5 +20,14 @@ class HomeActivity : AppCompatActivity() {
                 .add(R.id.fragment_container, fragment)
                 .commit()
         }
+    }
+
+    override fun onPatientGonnaBeAdded() {
+        val fragment = AddPatientFragment()
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
     }
 }
