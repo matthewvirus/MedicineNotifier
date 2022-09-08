@@ -2,31 +2,46 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/patient_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/patient_name"
+        android:text="@string/patient_full_name"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-        android:id="@+id/patient_item_surname"
+        android:id="@+id/patient_item_date_of_birth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/patient_surname"
+        android:text="@string/date_of_birth"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/patient_item_name"/>
+
+    <TextView
+        android:id="@+id/patient_item_diagnosis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/patient_diagnosis"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patient_item_date_of_birth"/>
 
     <ImageView
         android:id="@+id/patient_status_ic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_patient_status"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/patient_status_desc" />
