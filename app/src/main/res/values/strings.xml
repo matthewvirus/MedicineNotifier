@@ -8,4 +8,9 @@
     <string name="unhealthy_patient">Болен</string>
     <string name="create_patient_btn">Создать пациента</string>
     <string name="patient_status_desc">Patient status</string>
+    <string name="patient_diagnosis">Диагноз пациента</string>
+    <string name="patient_patronymic">Отчество пациента</string>
+    <string name="patient_full_name">ФИО</string>
+    <string name="date_of_birth">Дата рождения</string>
+    <string name="dob_choice_btn">Выберите дату</string>
 </resources>
