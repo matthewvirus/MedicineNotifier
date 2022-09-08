@@ -1,5 +1,9 @@
 package by.matthewvirus.medicinenotifier.ui.patientslist
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,38 +12,68 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.PatientDataModel
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import by.matthewvirus.medicinenotifier.databinding.PatientsListFragmentBinding
+import by.matthewvirus.medicinenotifier.util.DATE_PATTERN
+import java.text.SimpleDateFormat
 
 class PatientsListFragment : Fragment() {
 
-    private lateinit var patientsListRecyclerView: RecyclerView
-    private lateinit var addPatientFloatingActionButton: FloatingActionButton
+    interface Callbacks {
+        fun onPatientGonnaBeAdded()
+    }
+
+    private lateinit var bindingPatientsListFragment: PatientsListFragmentBinding
+
+    private var callbacks: Callbacks? = null
     private var adapter: PatientAdapter? = null
 
     private val patientsListViewModel by lazy {
-        ViewModelProvider(this).get(PatientsListViewModel::class.java)
+        ViewModelProvider(this)[PatientsListViewModel::class.java]
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        callbacks = context as Callbacks?
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
-        val view =  inflater.inflate(R.layout.patients_list_fragment, container, false)
-        patientsListRecyclerView = view.findViewById(R.id.patients_recycler_view) as RecyclerView
-        patientsListRecyclerView.layoutManager = LinearLayoutManager(context)
-        addPatientFloatingActionButton = view.findViewById(R.id.add_new_patient)
+    ): View {
+        bindingPatientsListFragment = PatientsListFragmentBinding.inflate(inflater, container, false)
+        applyForAllElements()
         updateUI()
-        return view
+        return bindingPatientsListFragment.root
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        callbacks = null
     }
 
     private fun updateUI() {
         val patients = patientsListViewModel.patientsList
         adapter = PatientAdapter(patients)
-        patientsListRecyclerView.adapter = adapter
+        bindingPatientsListFragment.patientsRecyclerView.adapter = adapter
+    }
+
+    private fun applyForAllElements() {
+        bindingPatientsListFragment.patientsRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+        }
+        bindingPatientsListFragment.addNewPatient.apply {
+            setColorFilter(Color.argb(255, 255, 255, 255))
+            setOnClickListener {
+                callbacks?.onPatientGonnaBeAdded()
+            }
+        }
     }
 
     private inner class PatientHolder(view: View)
@@ -47,13 +81,23 @@ class PatientsListFragment : Fragment() {
 
         private lateinit var patient: PatientDataModel
         private val patientNameTitle: TextView = itemView.findViewById(R.id.patient_item_name)
-        private val patientSurnameTitle: TextView = itemView.findViewById(R.id.patient_item_surname)
+        private val patientDateOfBirthTitle: TextView = itemView.findViewById(R.id.patient_item_date_of_birth)
+        private val patientDiagnosisTitle: TextView = itemView.findViewById(R.id.patient_item_diagnosis)
         private val patientStatusIcon: ImageView = itemView.findViewById(R.id.patient_status_ic)
 
+        @SuppressLint("SimpleDateFormat")
+        @RequiresApi(Build.VERSION_CODES.N)
         fun bind(patient: PatientDataModel) {
             this.patient = patient
             patientNameTitle.text = this.patient.patientName
-            patientSurnameTitle.text = this.patient.patientSurname
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                patientDateOfBirthTitle.text = SimpleDateFormat(DATE_PATTERN).format(this.patient.dateOfBirth)
+            }
+            patientDiagnosisTitle.text = this.patient.patientDiagnosis
+            when(this.patient.patientStatus) {
+                true -> patientStatusIcon.setColorFilter(Color.argb(255, 0, 255, 0))
+                false -> patientStatusIcon.setColorFilter(Color.argb(255, 255, 0, 0))
+            }
         }
 
         init {
@@ -73,6 +117,7 @@ class PatientsListFragment : Fragment() {
             return PatientHolder(view)
         }
 
+        @RequiresApi(Build.VERSION_CODES.N)
         override fun onBindViewHolder(holder: PatientHolder, position: Int) {
             val patient = patients[position]
             holder.bind(patient)

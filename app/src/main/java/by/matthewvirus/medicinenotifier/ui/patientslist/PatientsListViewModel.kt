@@ -12,6 +12,7 @@ class PatientsListViewModel : ViewModel() {
             patient.patientName = "Patient"
             patient.patientSurname = "no. $i"
             patient.patientStatus = (i % 2 == 0)
+            patient.patientDiagnosis = "Diagnosis no. $i"
             patientsList += patient
         }
     }
