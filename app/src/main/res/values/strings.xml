@@ -1,16 +1,29 @@
 <resources>
     <string name="app_name">Medicine Notifier</string>
-    <string name="creating_of_new_patient">Creating of new patient</string>
-    <string name="patient_name">Имя пациента</string>
-    <string name="patient_surname">Фамилия пациента</string>
-    <string name="patient_status">Статус пациента</string>
-    <string name="healthy_patient">Здоров</string>
-    <string name="unhealthy_patient">Болен</string>
-    <string name="create_patient_btn">Создать пациента</string>
-    <string name="patient_status_desc">Patient status</string>
-    <string name="patient_diagnosis">Диагноз пациента</string>
-    <string name="patient_patronymic">Отчество пациента</string>
-    <string name="patient_full_name">ФИО</string>
-    <string name="date_of_birth">Дата рождения</string>
-    <string name="dob_choice_btn">Выберите дату</string>
+
+    <!--Strings for Smart Talk-->
+    <string name="creating_of_new_medicine">Добавление нового лекарства</string>
+
+    <!--Strings for medicine_list_item.xml-->
+    <string name="medicine_name">Название лекарства: %s</string>
+    <string name="medicine_status">Статус: %s</string>
+    <string name="medicine_num_in_container">Осталось в контейнере: %d штук.</string>
+
+    <!--Strings for add_medicine_fragment.xml-->
+    <string name="medicine_name_question">Название лекарства</string>
+    <string name="number_of_medicines_in_container_question">Таблеток в контейнере</string>
+    <string name="times_per_day_question">Раз в день:</string>
+    <string name="starting_date">Дата начала:</string>
+    <string name="ending_date">Дата окончания:</string>
+    <string name="first_notification_time_question">Время первого уведомления:</string>
+    <string name="create_medicine_notification">Создать напоминание!</string>
+
+    <!--Strings for spinner-->
+    <string-array name="times_per_day">
+        <item>Один раз в день</item>
+        <item>Два раза в день</item>
+        <item>Три раза в день</item>
+        <item>Четыре раза в день</item>
+    </string-array>
+
 </resources>
