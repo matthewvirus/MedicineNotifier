@@ -12,14 +12,13 @@ import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.dialogs.DatePickerFragment
-import by.matthewvirus.medicinenotifier.util.DATE_FORMAT
-import by.matthewvirus.medicinenotifier.util.DIALOG_DATE
-import by.matthewvirus.medicinenotifier.util.REQUEST_DATE
+import by.matthewvirus.medicinenotifier.ui.dialogs.TimePickerFragment
+import by.matthewvirus.medicinenotifier.util.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddMedicineFragment
-    : Fragment(), DatePickerFragment.Callbacks {
+    : Fragment(), DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
 
@@ -42,19 +41,32 @@ class AddMedicineFragment
 
     override fun onDateSelected(date: Date) {
         medicine.medicineTakingEndDate = date
-        updateUI()
+        updateDate()
+    }
+
+    override fun onTimeSelected(time: Date) {
+        medicine.medicineTakingFirstTime = time
+        updateTime()
     }
 
     private fun applyForAllElements() {
         setMedicineTimesPerDayAdapter()
         selectEndDate()
+        selectFirstTime()
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    private fun updateUI() {
+    private fun updateDate() {
         bindingAddPatientFragment.endDate.text =
-            getString(R.string.starting_date) +
+            getString(R.string.ending_date) + " " +
                     SimpleDateFormat(DATE_FORMAT).format(medicine.medicineTakingEndDate)
+    }
+
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
+    private fun updateTime() {
+        bindingAddPatientFragment.firstNotificationTime.text =
+            getString(R.string.first_notification_time_question) + " " +
+                    SimpleDateFormat(TIME_FORMAT).format(medicine.medicineTakingFirstTime)
     }
 
     private fun setMedicineTimesPerDayAdapter() {
@@ -74,9 +86,20 @@ class AddMedicineFragment
                 setTargetFragment(this@AddMedicineFragment, REQUEST_DATE)
                 show(
                     this@AddMedicineFragment
-                        .requireParentFragment()
-                        .parentFragmentManager,
+                        .requireFragmentManager(),
                     DIALOG_DATE)
+            }
+        }
+    }
+
+    private fun selectFirstTime() {
+        bindingAddPatientFragment.firstNotificationTime.setOnClickListener {
+            TimePickerFragment.newInstance(medicine.medicineTakingFirstTime).apply {
+                setTargetFragment(this@AddMedicineFragment, REQUEST_TIME)
+                show(
+                    this@AddMedicineFragment.
+                            requireFragmentManager(),
+                    DIALOG_TIME)
             }
         }
     }
