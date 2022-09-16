@@ -9,9 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.matthewvirus.medicinenotifier.R
@@ -27,9 +28,9 @@ class MedicineListFragment : Fragment() {
     private lateinit var bindingMedicineListFragment: MedicineListFragmentBinding
 
     private var callbacks: Callbacks? = null
-    private var medicineAdapter: MedicineAdapter? = null
+    private var medicineAdapter: MedicineAdapter? = MedicineAdapter(emptyList())
 
-    private val patientsListViewModel by lazy {
+    private val medicinesListViewModel by lazy {
         ViewModelProvider(this)[MedicineListViewModel::class.java]
     }
 
@@ -45,7 +46,6 @@ class MedicineListFragment : Fragment() {
         bindingMedicineListFragment =
             MedicineListFragmentBinding.inflate(inflater, container, false)
         applyForAllElements()
-        updateUI()
         return bindingMedicineListFragment.root
     }
 
@@ -54,8 +54,18 @@ class MedicineListFragment : Fragment() {
         callbacks = null
     }
 
-    private fun updateUI() {
-        val medicines = patientsListViewModel.medicines
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        medicinesListViewModel.medicinesLiveData.observe(
+            viewLifecycleOwner
+        ) { medicines ->
+            medicines?.let {
+                updateUI(medicines)
+            }
+        }
+    }
+
+    private fun updateUI(medicines: List<MedicineDataModel>) {
         medicineAdapter = MedicineAdapter(medicines)
         bindingMedicineListFragment.medicineRecyclerView.adapter = medicineAdapter
     }
@@ -69,7 +79,6 @@ class MedicineListFragment : Fragment() {
         bindingMedicineListFragment.medicineRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = medicineAdapter
-            addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
         }
     }
 
@@ -82,41 +91,45 @@ class MedicineListFragment : Fragment() {
         }
     }
 
-    private inner class MedicineHolder(view: View)
-        : RecyclerView.ViewHolder(view), View.OnClickListener {
-
-        private lateinit var medicine: MedicineDataModel
-        private val medicineNameTitle: TextView = itemView.findViewById(R.id.medicine_item_name)
-        private val medicineStatusTitle: TextView = itemView.findViewById(R.id.medicine_item_status)
-        private val medicineNumberInContainerTitle: TextView =
-            itemView.findViewById(R.id.medicine_item_number_in_container)
-
-        fun bind(medicine: MedicineDataModel) {
-            this.medicine = medicine
-            medicineNameTitle.text = getString(R.string.medicine_name, this.medicine.medicineName)
-            medicineStatusTitle.text = getString(
-                R.string.medicine_status,
-                when(this.medicine.medicineStatus) {
-                    true -> "принято"
-                    false -> "не принято"
-                })
-            medicineNumberInContainerTitle.text = getString(
-                R.string.medicine_num_in_container,
-                this.medicine.medicineNumberInContainer)
-        }
-
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View?) {
-
-        }
-
-    }
-
     private inner class MedicineAdapter(var medicines: List<MedicineDataModel>)
-        : RecyclerView.Adapter<MedicineHolder>() {
+        : RecyclerView.Adapter<MedicineAdapter.MedicineHolder>() {
+
+        private inner class MedicineHolder(view: View)
+            : RecyclerView.ViewHolder(view), View.OnClickListener {
+
+            private lateinit var medicine: MedicineDataModel
+            private val medicineNameTitle: TextView =
+                itemView.findViewById(R.id.medicine_item_name)
+            private val medicineStatusTitle: TextView =
+                itemView.findViewById(R.id.medicine_item_status)
+            private val medicineNumberInContainerTitle: TextView =
+                itemView.findViewById(R.id.medicine_item_number_in_container)
+            val expandedLayout: RelativeLayout =
+                itemView.findViewById(R.id.card_view_expanded_layout)
+            val mainLayout: ConstraintLayout =
+                itemView.findViewById(R.id.card_view_main_layout)
+
+            fun bind(medicine: MedicineDataModel) {
+                this.medicine = medicine
+                medicineNameTitle.text = getString(R.string.medicine_name, this.medicine.medicineName)
+                medicineStatusTitle.text = getString(
+                    R.string.medicine_status,
+                    when(this.medicine.medicineStatus) {
+                        true -> "принято"
+                        false -> "не принято"
+                    })
+                medicineNumberInContainerTitle.text = getString(
+                    R.string.medicine_num_in_container,
+                    this.medicine.medicineNumberInContainer)
+            }
+
+            init {
+                itemView.setOnClickListener(this)
+            }
+
+            override fun onClick(view: View?) {}
+
+        }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineHolder {
             val view = layoutInflater.inflate(viewType, parent, false)
@@ -127,6 +140,17 @@ class MedicineListFragment : Fragment() {
         override fun onBindViewHolder(holder: MedicineHolder, position: Int) {
             val medicine = medicines[position]
             holder.bind(medicine)
+
+            val isExpanded = medicines[position].isExpanded
+            holder.expandedLayout.visibility = when(isExpanded) {
+                true -> View.VISIBLE
+                false -> View.GONE
+            }
+
+            holder.mainLayout.setOnClickListener {
+                medicine.isExpanded = !medicine.isExpanded
+                notifyItemChanged(position)
+            }
         }
 
         override fun getItemCount(): Int {

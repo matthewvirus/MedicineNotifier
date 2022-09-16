@@ -16,6 +16,8 @@
     <string name="ending_date">Дата окончания: </string>
     <string name="first_notification_time_question">Время первого уведомления: </string>
     <string name="create_medicine_notification">Создать напоминание!</string>
+    <string name="take_medicine_button">Принять</string>
+    <string name="to_take_text">Осталось принять: %s</string>
 
     <!--Strings for spinner-->
     <string-array name="times_per_day">

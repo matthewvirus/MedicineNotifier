@@ -7,7 +7,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
@@ -21,6 +23,7 @@ class AddMedicineFragment
     : Fragment(), DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
+    private var userTimesPerDayChoice = ""
 
     private val medicine = MedicineDataModel()
 
@@ -53,6 +56,7 @@ class AddMedicineFragment
         setMedicineTimesPerDayAdapter()
         selectEndDate()
         selectFirstTime()
+        createNotification()
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
@@ -77,7 +81,26 @@ class AddMedicineFragment
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             bindingAddPatientFragment.medicineTimesPerDaySpinner.adapter = adapter
+            selectSpinnerItem()
         }
+    }
+
+    private fun selectSpinnerItem() {
+        bindingAddPatientFragment.medicineTimesPerDaySpinner.onItemSelectedListener =
+            object: AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+                override fun onItemSelected(parent: AdapterView<*>?,
+                                            view: View?,
+                                            position: Int,
+                                            id: Long) {
+                    val choice = resources.getStringArray(R.array.times_per_day)
+                    Toast.makeText( context,
+                        "Your choice is $position",
+                        Toast.LENGTH_SHORT).show()
+                    userTimesPerDayChoice = choice[position]
+                }
+            }
     }
 
     private fun selectEndDate() {
@@ -101,6 +124,22 @@ class AddMedicineFragment
                             requireFragmentManager(),
                     DIALOG_TIME)
             }
+        }
+    }
+
+    private fun createMedicine(): MedicineDataModel {
+        val medicine = MedicineDataModel()
+        medicine.medicineName =
+            bindingAddPatientFragment.medicineNameInput.text.toString()
+        medicine.medicineNumberInContainer =
+            bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
+        medicine.medicineUseTimesPerDay = userTimesPerDayChoice
+        return medicine
+    }
+
+    private fun createNotification() {
+        bindingAddPatientFragment.createMedicineNotificationButton.setOnClickListener {
+            AddMedicineViewModel().addMedicine(createMedicine())
         }
     }
 

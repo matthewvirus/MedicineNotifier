@@ -23,6 +23,7 @@
             android:id="@+id/medicine_name_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="text"
             android:hint="@string/medicine_name_question"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -43,6 +44,7 @@
             android:id="@+id/medicine_number_in_container_input"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:inputType="numberDecimal"
             android:hint="@string/number_of_medicines_in_container_question"/>
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -53,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="@string/times_per_day_question"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +77,7 @@
         android:layout_height="wrap_content"
         android:text="@string/ending_date"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,6 +89,7 @@
         android:layout_height="wrap_content"
         android:text="@string/first_notification_time_question"
         android:textSize="16sp"
+        android:textColor="@color/black"
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
