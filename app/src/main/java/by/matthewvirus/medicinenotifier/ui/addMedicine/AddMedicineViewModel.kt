@@ -1,4 +1,4 @@
-package by.matthewvirus.medicinenotifier.ui.addpatient
+package by.matthewvirus.medicinenotifier.ui.addMedicine
 
 import androidx.lifecycle.ViewModel
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel

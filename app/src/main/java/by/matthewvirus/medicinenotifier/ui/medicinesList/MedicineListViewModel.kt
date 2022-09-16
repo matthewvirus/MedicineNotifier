@@ -1,7 +1,6 @@
-package by.matthewvirus.medicinenotifier.ui.patientslist
+package by.matthewvirus.medicinenotifier.ui.medicinesList
 
 import androidx.lifecycle.ViewModel
-import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.data.repository.MedicineRepository
 
 class MedicineListViewModel : ViewModel() {

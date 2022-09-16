@@ -1,4 +1,4 @@
-package by.matthewvirus.medicinenotifier.ui.addpatient
+package by.matthewvirus.medicinenotifier.ui.addMedicine
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider

@@ -1,4 +1,4 @@
-package by.matthewvirus.medicinenotifier.ui.patientslist
+package by.matthewvirus.medicinenotifier.ui.medicinesList
 
 import android.content.Context
 import android.graphics.Color
@@ -111,7 +111,8 @@ class MedicineListFragment : Fragment() {
 
             fun bind(medicine: MedicineDataModel) {
                 this.medicine = medicine
-                medicineNameTitle.text = getString(R.string.medicine_name, this.medicine.medicineName)
+                medicineNameTitle.text =
+                    getString(R.string.medicine_name, this.medicine.medicineName)
                 medicineStatusTitle.text = getString(
                     R.string.medicine_status,
                     when(this.medicine.medicineStatus) {

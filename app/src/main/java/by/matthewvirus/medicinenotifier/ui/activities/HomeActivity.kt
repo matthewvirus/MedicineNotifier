@@ -3,8 +3,8 @@ package by.matthewvirus.medicinenotifier.ui.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import by.matthewvirus.medicinenotifier.R
-import by.matthewvirus.medicinenotifier.ui.addpatient.AddMedicineFragment
-import by.matthewvirus.medicinenotifier.ui.patientslist.MedicineListFragment
+import by.matthewvirus.medicinenotifier.ui.addMedicine.AddMedicineFragment
+import by.matthewvirus.medicinenotifier.ui.medicinesList.MedicineListFragment
 
 class HomeActivity : AppCompatActivity(), MedicineListFragment.Callbacks {
     override fun onCreate(savedInstanceState: Bundle?) {
