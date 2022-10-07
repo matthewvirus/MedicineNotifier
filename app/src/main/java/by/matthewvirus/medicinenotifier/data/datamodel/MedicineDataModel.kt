@@ -9,11 +9,9 @@ data class MedicineDataModel(
     @PrimaryKey
     var medicineId: UUID = UUID.randomUUID(),
     var medicineName: String = "",
-    var medicineStatus: Boolean = false,
-    var medicineType: String = "",
     var medicineNumberInContainer: Int = 0,
     var medicineMinNumberRemind: Int = 0,
-    var medicineUseTimesPerDay: String = "",
-    var medicineTakingFirstTime: Date = Date(),
-    var isEndedForToday: Boolean = false
+    var medicineDose: Int = 0,
+    var medicineUseTimesPerDay: Int = 0,
+    var medicineTakingFirstTime: Date = Date()
 )
