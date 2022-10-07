@@ -13,7 +13,7 @@
     <string name="medicine_name_question">Название лекарства</string>
     <string name="number_of_medicines_in_container_question">Таблеток в контейнере</string>
     <string name="times_per_day_question">Раз в день:</string>
-    <string name="first_notification_time_question">Время первого уведомления: </string>
+    <string name="first_notification_time_question">Время первого уведомления:</string>
     <string name="create_medicine_notification">Создать напоминание!</string>
     <string name="take_medicine_button">Принять</string>
     <string name="delete_medicine_button">Удалить</string>

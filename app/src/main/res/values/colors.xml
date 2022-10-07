@@ -8,8 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     
-    <color name="light_blue_primary">#80deea</color>
-    <color name="light_blue_primary_l">#b4ffff</color>
-    <color name="light_blue_primary_d">#4bacb8</color>
+    <color name="light_blue_primary">#82b1ff</color>
+    <color name="light_blue_primary_l">#b6e3ff</color>
+    <color name="light_blue_primary_d">#4d82cb</color>
     <color name="secondary_black">#212121</color>
 </resources>

@@ -1,6 +1,7 @@
 package by.matthewvirus.medicinenotifier.ui.addMedicine
 
 import android.annotation.SuppressLint
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,27 +12,25 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
+import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.ui.dialogs.TimePickerFragment
-import by.matthewvirus.medicinenotifier.util.*
+import by.matthewvirus.medicinenotifier.util.DIALOG_TIME
+import by.matthewvirus.medicinenotifier.util.REQUEST_TIME
+import by.matthewvirus.medicinenotifier.util.TIME_FORMAT
 import java.text.SimpleDateFormat
 import java.util.*
 
 @Suppress("DEPRECATION")
 class AddMedicineFragment
-    : Fragment(), TimePickerFragment.Callbacks {
+    : Fragment(), TimePickerFragment.Callbacks, HomeActivity.Callbacks {
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
     private var userTimesPerDayChoice = ""
 
     private val medicine = MedicineDataModel()
-
-    private val addMedicineViewModel by lazy {
-        ViewModelProvider(this)[AddMedicineViewModel::class.java]
-    }
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -42,7 +41,12 @@ class AddMedicineFragment
         bindingAddPatientFragment =
             AddMedicineFragmentBinding.inflate(inflater, container, false)
         applyForAllElements()
+        hideBottomNavigationView(true)
         return bindingAddPatientFragment.root
+    }
+
+    override fun hideBottomNavigationView(flag: Boolean) {
+        (requireActivity() as HomeActivity).hideBottomNavigationView(flag)
     }
 
     override fun onTimeSelected(time: Date) {
@@ -50,17 +54,24 @@ class AddMedicineFragment
         updateTime()
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     private fun applyForAllElements() {
+        bindingAddPatientFragment.firstNotificationTime.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        setTime(Date())
         setMedicineTimesPerDayAdapter()
         selectFirstTime()
         createNotification()
     }
 
-    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun updateTime() {
+        setTime(medicine.medicineTakingFirstTime)
+    }
+
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
+    private fun setTime(timeToFormat: Date) {
         bindingAddPatientFragment.firstNotificationTime.text =
             getString(R.string.first_notification_time_question) + " " +
-                    SimpleDateFormat(TIME_FORMAT).format(medicine.medicineTakingFirstTime)
+                SimpleDateFormat(TIME_FORMAT).format(timeToFormat)
     }
 
     private fun setMedicineTimesPerDayAdapter() {
@@ -121,7 +132,8 @@ class AddMedicineFragment
         }
     }
 
-    companion object {
-        fun newInstance() = AddMedicineFragment()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigationView(false)
     }
 }
