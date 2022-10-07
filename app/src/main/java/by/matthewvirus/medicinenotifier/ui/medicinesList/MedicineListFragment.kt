@@ -1,5 +1,6 @@
 package by.matthewvirus.medicinenotifier.ui.medicinesList
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -16,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
+import by.matthewvirus.medicinenotifier.util.TIME_FORMAT
+import java.text.SimpleDateFormat
 
 class MedicineListFragment : Fragment() {
 
@@ -97,14 +100,23 @@ class MedicineListFragment : Fragment() {
             private lateinit var medicine: MedicineDataModel
             private val medicineNameTitle: TextView =
                 itemView.findViewById(R.id.medicine_item_name)
+            private val medicineTakingTime: TextView =
+                itemView.findViewById(R.id.medicines_times)
             private val medicineNumberInContainerTitle: TextView =
                 itemView.findViewById(R.id.medicine_item_number_in_container)
 
+            @SuppressLint("SetTextI18n")
             fun bind(medicine: MedicineDataModel) {
                 this.medicine = medicine
+
                 medicineNameTitle.text = this.medicine.medicineName
+
+                medicineTakingTime.text = this.medicine.medicineUseTimesPerDay +
+                        ". Первое напоминание в " +
+                        SimpleDateFormat(TIME_FORMAT).format(this.medicine.medicineTakingFirstTime)
+
                 medicineNumberInContainerTitle.text =
-                    this.medicine.medicineNumberInContainer.toString()
+                    "Осталось таблеток: " + this.medicine.medicineNumberInContainer.toString()
             }
 
             init {

@@ -28,6 +28,7 @@ class AddMedicineFragment
     : Fragment(), TimePickerFragment.Callbacks, HomeActivity.Callbacks {
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
+
     private var userTimesPerDayChoice = ""
 
     private val medicine = MedicineDataModel()
@@ -96,9 +97,6 @@ class AddMedicineFragment
                                             position: Int,
                                             id: Long) {
                     val choice = resources.getStringArray(R.array.times_per_day)
-                    Toast.makeText( context,
-                        "Your choice is $position",
-                        Toast.LENGTH_SHORT).show()
                     userTimesPerDayChoice = choice[position]
                 }
             }
@@ -107,10 +105,11 @@ class AddMedicineFragment
     private fun selectFirstTime() {
         bindingAddPatientFragment.firstNotificationTime.setOnClickListener {
             TimePickerFragment.newInstance(medicine.medicineTakingFirstTime).apply {
-                setTargetFragment(this@AddMedicineFragment, REQUEST_TIME)
+                setTargetFragment(
+                    this@AddMedicineFragment,
+                    REQUEST_TIME)
                 show(
-                    this@AddMedicineFragment.
-                            requireFragmentManager(),
+                    this@AddMedicineFragment.requireFragmentManager(),
                     DIALOG_TIME)
             }
         }
@@ -118,11 +117,23 @@ class AddMedicineFragment
 
     private fun createMedicine(): MedicineDataModel {
         val medicine = MedicineDataModel()
+
         medicine.medicineName =
             bindingAddPatientFragment.medicineNameInput.text.toString()
+
         medicine.medicineNumberInContainer =
             bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
+
+        medicine.medicineMinNumberRemind =
+            bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
+
+        medicine.medicineDose -
+                bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
+
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
+
+        medicine.medicineTakingFirstTime = this.medicine.medicineTakingFirstTime
+
         return medicine
     }
 
