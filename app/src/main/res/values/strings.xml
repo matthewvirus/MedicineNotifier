@@ -5,19 +5,21 @@
     <string name="creating_of_new_medicine">Добавление нового лекарства</string>
 
     <!--Strings for medicine_list_item.xml-->
-    <string name="medicine_name">Название лекарства: %s</string>
-    <string name="medicine_status">Статус: %s</string>
-    <string name="medicine_num_in_container">Осталось в контейнере: %d штук.</string>
+    <string name="medicine_name">Название лекарства</string>
+    <string name="medicine_times">Время принятия</string>
+    <string name="medicine_num_in_container">Осталось</string>
 
     <!--Strings for add_medicine_fragment.xml-->
     <string name="medicine_name_question">Название лекарства</string>
     <string name="number_of_medicines_in_container_question">Таблеток в контейнере</string>
     <string name="times_per_day_question">Раз в день:</string>
-    <string name="ending_date">Дата окончания: </string>
     <string name="first_notification_time_question">Время первого уведомления: </string>
     <string name="create_medicine_notification">Создать напоминание!</string>
     <string name="take_medicine_button">Принять</string>
-    <string name="to_take_text">Осталось принять: %s</string>
+    <string name="delete_medicine_button">Удалить</string>
+    <string name="treatment">Лечение</string>
+    <string name="notifications">Уведомления</string>
+    <string name="personal_status">Самочувствие</string>
 
     <!--Strings for spinner-->
     <string-array name="times_per_day">

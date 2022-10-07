@@ -14,3 +14,9 @@ const val REQUEST_TIME = 0
 
 // Database constants
 const val DATABASE_NAME = "medicine-database"
+
+// Notifications
+const val NOTIFICATION_ID = 1
+const val CHANNEL_ID = "channel1"
+const val TITLE_EXTRA = "titleExtra"
+const val MESSAGE_EXTRA = "messageExtra"

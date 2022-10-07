@@ -1,36 +1,39 @@
 package by.matthewvirus.medicinenotifier.ui.addMedicine
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.ViewModelProvider
+import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
-import by.matthewvirus.medicinenotifier.ui.dialogs.DatePickerFragment
 import by.matthewvirus.medicinenotifier.ui.dialogs.TimePickerFragment
 import by.matthewvirus.medicinenotifier.util.*
 import java.text.SimpleDateFormat
 import java.util.*
 
+@Suppress("DEPRECATION")
 class AddMedicineFragment
-    : Fragment(), DatePickerFragment.Callbacks, TimePickerFragment.Callbacks {
+    : Fragment(), TimePickerFragment.Callbacks {
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
     private var userTimesPerDayChoice = ""
 
     private val medicine = MedicineDataModel()
 
-    private val addPatientViewModel by lazy {
+    private val addMedicineViewModel by lazy {
         ViewModelProvider(this)[AddMedicineViewModel::class.java]
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,11 +45,6 @@ class AddMedicineFragment
         return bindingAddPatientFragment.root
     }
 
-    override fun onDateSelected(date: Date) {
-        medicine.medicineTakingEndDate = date
-        updateDate()
-    }
-
     override fun onTimeSelected(time: Date) {
         medicine.medicineTakingFirstTime = time
         updateTime()
@@ -54,16 +52,8 @@ class AddMedicineFragment
 
     private fun applyForAllElements() {
         setMedicineTimesPerDayAdapter()
-        selectEndDate()
         selectFirstTime()
         createNotification()
-    }
-
-    @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    private fun updateDate() {
-        bindingAddPatientFragment.endDate.text =
-            getString(R.string.ending_date) + " " +
-                    SimpleDateFormat(DATE_FORMAT).format(medicine.medicineTakingEndDate)
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
@@ -103,18 +93,6 @@ class AddMedicineFragment
             }
     }
 
-    private fun selectEndDate() {
-        bindingAddPatientFragment.endDate.setOnClickListener {
-            DatePickerFragment.newInstance(medicine.medicineTakingEndDate).apply {
-                setTargetFragment(this@AddMedicineFragment, REQUEST_DATE)
-                show(
-                    this@AddMedicineFragment
-                        .requireFragmentManager(),
-                    DIALOG_DATE)
-            }
-        }
-    }
-
     private fun selectFirstTime() {
         bindingAddPatientFragment.firstNotificationTime.setOnClickListener {
             TimePickerFragment.newInstance(medicine.medicineTakingFirstTime).apply {
@@ -146,5 +124,4 @@ class AddMedicineFragment
     companion object {
         fun newInstance() = AddMedicineFragment()
     }
-
 }

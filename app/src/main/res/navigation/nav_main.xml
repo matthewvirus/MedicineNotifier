@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/treatment">
+
+    <fragment
+        android:id="@+id/treatment"
+        android:name="by.matthewvirus.medicinenotifier.ui.medicinesList.MedicineListFragment"
+        android:label="first_fragment"
+        tools:layout="@layout/medicine_list_fragment"/>
+    <fragment
+        android:id="@+id/notifications"
+        android:name="by.matthewvirus.medicinenotifier.ui.allNotifications.AllNotificationsFragment"
+        android:label="second_fragment"
+        tools:layout="@layout/all_notifications_fragment"/>
+    <fragment
+        android:id="@+id/personal_status"
+        android:name="by.matthewvirus.medicinenotifier.ui.personalFeelings.PersonalFeelingsFragment"
+        android:label="second_fragment"
+        tools:layout="@layout/personal_feelings_fragment"/>
+
+</navigation>

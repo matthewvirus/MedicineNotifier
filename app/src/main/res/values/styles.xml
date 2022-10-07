@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="CardViewItemStyle" parent="Theme.MaterialComponents.DayNight">
-        <item name="cardCornerRadius">2dp</item>
+        <item name="cardCornerRadius">16dp</item>
         <item name="cardElevation">2dp</item>
         <item name="cardMaxElevation">4dp</item>
         <item name="contentPaddingTop">8dp</item>

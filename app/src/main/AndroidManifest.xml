@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="by.matthewvirus.medicinenotifier">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    
     <application
         android:name=".MedicineNotifierApplication"
         android:allowBackup="true"
@@ -10,6 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedicineNotifier">
+        <receiver android:name=".notifications.MedicineNotification"
+            android:enabled="true"/>
         <activity
             android:name=".ui.activities.HomeActivity"
             android:exported="true">
