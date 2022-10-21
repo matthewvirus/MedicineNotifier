@@ -2,14 +2,11 @@ package by.matthewvirus.medicinenotifier.ui.medicinesList
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,13 +14,14 @@ import androidx.recyclerview.widget.RecyclerView
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
+import by.matthewvirus.medicinenotifier.ui.addMedicine.AddMedicineFragment
 import by.matthewvirus.medicinenotifier.util.TIME_FORMAT
 import java.text.SimpleDateFormat
 
 class MedicineListFragment : Fragment() {
 
     interface Callbacks {
-        fun onPatientGonnaBeAdded()
+        fun onFragmentTransition(fragment: Fragment)
     }
 
     private lateinit var bindingMedicineListFragment: MedicineListFragmentBinding
@@ -86,7 +84,7 @@ class MedicineListFragment : Fragment() {
     private fun addNewMedicineButtonSettings() {
         bindingMedicineListFragment.addNewMedicine.apply {
             setOnClickListener {
-                callbacks?.onPatientGonnaBeAdded()
+                callbacks?.onFragmentTransition(AddMedicineFragment())
             }
         }
     }
@@ -105,7 +103,7 @@ class MedicineListFragment : Fragment() {
             private val medicineNumberInContainerTitle: TextView =
                 itemView.findViewById(R.id.medicine_item_number_in_container)
 
-            @SuppressLint("SetTextI18n")
+            @SuppressLint("SetTextI18n", "SimpleDateFormat")
             fun bind(medicine: MedicineDataModel) {
                 this.medicine = medicine
 
@@ -131,7 +129,6 @@ class MedicineListFragment : Fragment() {
             return MedicineHolder(view)
         }
 
-        @RequiresApi(Build.VERSION_CODES.N)
         override fun onBindViewHolder(holder: MedicineHolder, position: Int) {
             val medicine = medicines[position]
             holder.bind(medicine)
@@ -144,9 +141,5 @@ class MedicineListFragment : Fragment() {
         override fun getItemViewType(position: Int): Int {
             return R.layout.medicine_list_item
         }
-    }
-
-    companion object {
-        fun newInstance() = MedicineListFragment()
     }
 }

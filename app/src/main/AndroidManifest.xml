@@ -3,7 +3,7 @@
     package="by.matthewvirus.medicinenotifier">
 
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
-    
+
     <application
         android:name=".MedicineNotifierApplication"
         android:allowBackup="true"
@@ -12,17 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MedicineNotifier">
-        <receiver android:name=".notifications.MedicineNotification"
-            android:enabled="true"/>
         <activity
             android:name=".ui.activities.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <receiver android:name=".receivers.AlarmReceiver"/>
     </application>
 
 </manifest>

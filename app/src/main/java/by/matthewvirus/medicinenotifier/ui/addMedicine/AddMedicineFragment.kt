@@ -1,6 +1,11 @@
 package by.matthewvirus.medicinenotifier.ui.addMedicine
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Context.ALARM_SERVICE
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
@@ -9,12 +14,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
+import by.matthewvirus.medicinenotifier.receivers.AlarmReceiver
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.ui.dialogs.TimePickerFragment
 import by.matthewvirus.medicinenotifier.util.DIALOG_TIME
@@ -24,13 +29,16 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @Suppress("DEPRECATION")
-class AddMedicineFragment
-    : Fragment(), TimePickerFragment.Callbacks, HomeActivity.Callbacks {
+class AddMedicineFragment :
+    Fragment(),
+    TimePickerFragment.Callbacks,
+    HomeActivity.Callbacks
+{
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
-
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
     private var userTimesPerDayChoice = ""
-
     private val medicine = MedicineDataModel()
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -55,7 +63,6 @@ class AddMedicineFragment
         updateTime()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun applyForAllElements() {
         bindingAddPatientFragment.firstNotificationTime.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         setTime(Date())
@@ -117,30 +124,34 @@ class AddMedicineFragment
 
     private fun createMedicine(): MedicineDataModel {
         val medicine = MedicineDataModel()
-
         medicine.medicineName =
             bindingAddPatientFragment.medicineNameInput.text.toString()
-
         medicine.medicineNumberInContainer =
             bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
-
         medicine.medicineMinNumberRemind =
             bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
-
         medicine.medicineDose -
                 bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
-
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
-
         medicine.medicineTakingFirstTime = this.medicine.medicineTakingFirstTime
-
         return medicine
     }
 
     private fun createNotification() {
         bindingAddPatientFragment.createMedicineNotificationButton.setOnClickListener {
             AddMedicineViewModel().addMedicine(createMedicine())
+            activity?.supportFragmentManager?.popBackStack()
+            startAlarm(context)
         }
+    }
+
+    private fun startAlarm(context: Context?) {
+        val timeInMillis = MedicineDataModel().medicineTakingFirstTime.time
+        val delayTimeInMillis: Long = 600000
+        alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmReceiver::class.java)
+        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
     }
 
     override fun onDestroyView() {
