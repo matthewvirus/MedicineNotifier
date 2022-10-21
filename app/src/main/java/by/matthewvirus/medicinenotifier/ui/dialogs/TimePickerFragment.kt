@@ -11,6 +11,7 @@ import java.util.*
 class TimePickerFragment: DialogFragment() {
 
     interface Callbacks {
+
         fun onTimeSelected(time: Date)
     }
 
@@ -37,6 +38,7 @@ class TimePickerFragment: DialogFragment() {
     }
 
     companion object {
+
         fun newInstance(time: Date): TimePickerFragment {
             val args = Bundle().apply {
                 putSerializable(ARG_TIME, time)
@@ -47,5 +49,4 @@ class TimePickerFragment: DialogFragment() {
             }
         }
     }
-
 }

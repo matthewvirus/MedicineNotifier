@@ -6,7 +6,6 @@ import androidx.room.Room
 import by.matthewvirus.medicinenotifier.data.database.MedicineNotifierDatabase
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.util.DATABASE_NAME
-import java.lang.IllegalStateException
 import java.util.*
 import java.util.concurrent.Executors
 
@@ -19,7 +18,6 @@ class MedicineRepository private constructor(context: Context) {
     ).build()
 
     private val medicineDao = database.medicineDao()
-
     private val executor = Executors.newSingleThreadExecutor()
 
     fun getMedicines(): LiveData<List<MedicineDataModel>> = medicineDao.getMedicines()
@@ -45,5 +43,4 @@ class MedicineRepository private constructor(context: Context) {
                 throw IllegalStateException("Medicine repository must be initialized!")
         }
     }
-
 }

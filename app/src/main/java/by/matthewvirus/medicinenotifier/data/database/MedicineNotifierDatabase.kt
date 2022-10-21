@@ -12,5 +12,4 @@ import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 abstract class MedicineNotifierDatabase : RoomDatabase() {
 
     abstract fun medicineDao(): MedicineDao
-
 }

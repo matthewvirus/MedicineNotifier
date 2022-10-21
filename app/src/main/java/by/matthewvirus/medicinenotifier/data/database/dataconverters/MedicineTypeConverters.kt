@@ -26,5 +26,4 @@ class MedicineTypeConverters {
     fun toUUID(string: String?): UUID? {
         return UUID.fromString(string)
     }
-
 }

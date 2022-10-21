@@ -3,6 +3,7 @@ package by.matthewvirus.medicinenotifier.ui.activities
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
@@ -33,8 +34,7 @@ class HomeActivity : AppCompatActivity(), MedicineListFragment.Callbacks {
         setupWithNavController(homeBinding.bottomNavigationView, navController)
     }
 
-    override fun onPatientGonnaBeAdded() {
-        val fragment = AddMedicineFragment()
+    override fun onFragmentTransition(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.activity_main_nav_host_fragment, fragment)
