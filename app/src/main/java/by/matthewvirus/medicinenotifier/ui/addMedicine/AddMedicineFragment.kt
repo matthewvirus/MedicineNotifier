@@ -40,6 +40,7 @@ class AddMedicineFragment :
     private lateinit var pendingIntent: PendingIntent
     private var userTimesPerDayChoice = ""
     private val medicine = MedicineDataModel()
+    private var flags = 0
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -150,7 +151,7 @@ class AddMedicineFragment :
         val delayTimeInMillis: Long = 600000
         alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
+        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, flags)
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
     }
 
