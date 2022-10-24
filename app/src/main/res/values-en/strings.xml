@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Medicine Notifier</string>
+
+    <!--Strings for Smart Talk-->
+    <string name="creating_of_new_medicine">New medicine adding</string>
+
+    <!--Strings for medicine_list_item.xml-->
+    <string name="medicine_name">Medicine name</string>
+    <string name="medicine_times">Time to get medicine</string>
+    <string name="medicine_num_in_container">Left</string>
+    <string name="first_notification">". First notification at "</string>
+    <string name="medicines_left">Pills left: </string>
+
+    <!--Strings for add_medicine_fragment.xml-->
+    <string name="medicine_name_question">Medicine name</string>
+    <string name="number_of_medicines_in_container_question">Pills in container</string>
+    <string name="medicine_critical_number_question">Pills threshold value</string>
+    <string name="medicine_dose_question">Dose</string>
+    <string name="times_per_day_question">Times per day:</string>
+    <string name="first_notification_time_question">First notification at:</string>
+    <string name="create_medicine_notification">Create notification!</string>
+    <string name="take_medicine_button">Take</string>
+    <string name="delete_medicine_button">Delete</string>
+    <string name="treatment">Treatment</string>
+    <string name="notifications">Notifications</string>
+    <string name="personal_status">Personal feelings</string>
+
+    <!--Strings for spinner-->
+    <string-array name="times_per_day">
+        <item>Once per day</item>
+        <item>Twice per day</item>
+        <item>Three times per day</item>
+        <item>Four times per day</item>
+    </string-array>
+
+    <!--Errors-->
+    <string name="name_error">Input medicine name!</string>
+    <string name="items_error">Input medicines number in container!</string>
+    <string name="critical_error">Input threshold!</string>
+    <string name="dose_error">Input dose!</string>
+</resources>
