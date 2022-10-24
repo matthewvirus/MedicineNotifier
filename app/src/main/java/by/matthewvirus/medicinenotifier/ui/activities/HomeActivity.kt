@@ -9,7 +9,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.databinding.ActivityHomeBinding
-import by.matthewvirus.medicinenotifier.ui.addMedicine.AddMedicineFragment
 import by.matthewvirus.medicinenotifier.ui.medicinesList.MedicineListFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 

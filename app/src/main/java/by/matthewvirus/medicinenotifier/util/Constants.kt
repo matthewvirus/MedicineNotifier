@@ -18,7 +18,7 @@ const val DATABASE_NAME = "medicine-database"
 // Notifications
 const val NOTIFICATION_ID = 1
 const val CHANNEL_ID = "channel1"
-const val CHANNEL_NAME = "MedicineReminder"
-const val CHANNEL_DESCRIPTION = "MedicineReminderDescription"
+const val CHANNEL_NAME = "Medicine Reminder"
+const val CHANNEL_DESCRIPTION = "Medicine Reminder Description"
 const val NOTIFICATION_TITLE = "Medicine Notifier"
 const val NOTIFICATION_MESSAGE = "You need to get medication!"

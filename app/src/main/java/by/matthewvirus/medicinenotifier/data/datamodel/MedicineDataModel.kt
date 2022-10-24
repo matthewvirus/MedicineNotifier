@@ -6,6 +6,7 @@ import java.util.*
 
 @Entity
 data class MedicineDataModel(
+
     @PrimaryKey
     var medicineId: UUID = UUID.randomUUID(),
     var medicineName: String = "",

@@ -13,6 +13,7 @@ import by.matthewvirus.medicinenotifier.util.*
 class AlarmReceiver: BroadcastReceiver() {
 
     private var flag = 0
+
     override fun onReceive(context: Context?, intent: Intent?) {
         val notificationIntent = Intent(context, AddMedicineFragment::class.java)
         notificationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

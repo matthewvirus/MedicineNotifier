@@ -7,5 +7,4 @@ class MedicineListViewModel : ViewModel() {
 
     private val medicineRepository = MedicineRepository.get()
     val medicinesLiveData = medicineRepository.getMedicines()
-
 }

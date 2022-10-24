@@ -5,7 +5,9 @@ import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.data.repository.MedicineRepository
 
 class AddMedicineViewModel : ViewModel() {
+
     private val medicineRepository = MedicineRepository.get()
+
     fun addMedicine(medicine: MedicineDataModel) {
         medicineRepository.addMedicine(medicine)
     }

@@ -10,6 +10,7 @@ import java.util.*
 
 @Dao
 interface MedicineDao {
+
     @Query("SELECT * FROM medicinedatamodel")
     fun getMedicines(): LiveData<List<MedicineDataModel>>
 
