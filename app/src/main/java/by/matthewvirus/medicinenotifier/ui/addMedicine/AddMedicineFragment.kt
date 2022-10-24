@@ -9,6 +9,8 @@ import android.content.Intent
 import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +43,7 @@ class AddMedicineFragment :
     private var userTimesPerDayChoice = ""
     private val medicine = MedicineDataModel()
     private var flags = 0
+    private var delayTimeInMillis: Long = 3600000
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -70,6 +73,17 @@ class AddMedicineFragment :
         setMedicineTimesPerDayAdapter()
         selectFirstTime()
         createNotification()
+        setUpListeners()
+    }
+
+    private fun isValid(): Boolean =
+        validateMedicineName() && validateMedicineNumberInContainer() && validateMedicineCriticalNumber() && validateMedicineDose()
+
+    private fun setUpListeners() {
+        bindingAddPatientFragment.medicineNameInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineNameInput))
+        bindingAddPatientFragment.medicineNumberInContainerInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineNumberInContainerInput))
+        bindingAddPatientFragment.medicineCriticalNumberInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineCriticalNumberInput))
+        bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineDoseInput))
     }
 
     private fun updateTime() {
@@ -104,6 +118,12 @@ class AddMedicineFragment :
                                             view: View?,
                                             position: Int,
                                             id: Long) {
+                    when(id) {
+                        0L -> delayTimeInMillis *= 24
+                        1L -> delayTimeInMillis *= 6
+                        2L -> delayTimeInMillis *= 4
+                        3L -> delayTimeInMillis *= 3
+                    }
                     val choice = resources.getStringArray(R.array.times_per_day)
                     userTimesPerDayChoice = choice[position]
                 }
@@ -131,8 +151,8 @@ class AddMedicineFragment :
             bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
         medicine.medicineMinNumberRemind =
             bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
-        medicine.medicineDose -
-                bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
+        medicine.medicineDose =
+            bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
         medicine.medicineTakingFirstTime = this.medicine.medicineTakingFirstTime
         return medicine
@@ -140,23 +160,90 @@ class AddMedicineFragment :
 
     private fun createNotification() {
         bindingAddPatientFragment.createMedicineNotificationButton.setOnClickListener {
-            AddMedicineViewModel().addMedicine(createMedicine())
-            activity?.supportFragmentManager?.popBackStack()
-            startAlarm(context)
+            if (isValid()) {
+                AddMedicineViewModel().addMedicine(createMedicine())
+                activity?.supportFragmentManager?.popBackStack()
+                startAlarm(context)
+            }
         }
     }
 
     private fun startAlarm(context: Context?) {
         val timeInMillis = MedicineDataModel().medicineTakingFirstTime.time
-        val delayTimeInMillis: Long = 600000
         alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
         pendingIntent = PendingIntent.getBroadcast(context, 0, intent, flags)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
+    }
+
+    private fun validateMedicineName(): Boolean {
+        if (bindingAddPatientFragment.medicineNameInput.text.toString().trim().isEmpty()) {
+            bindingAddPatientFragment.medicineNameLayout.error = getString(R.string.name_error)
+            bindingAddPatientFragment.medicineNameInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineNameLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateMedicineNumberInContainer(): Boolean {
+        if (bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().trim().isEmpty()) {
+            bindingAddPatientFragment.medicineNumberInContainerLayout.error = getString(R.string.items_error)
+            bindingAddPatientFragment.medicineNumberInContainerInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineNumberInContainerLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateMedicineCriticalNumber(): Boolean {
+        if (bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().trim().isEmpty()) {
+            bindingAddPatientFragment.medicineCriticalNumberLayout.error = getString(R.string.critical_error)
+            bindingAddPatientFragment.medicineCriticalNumberInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineCriticalNumberLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateMedicineDose(): Boolean {
+        if (bindingAddPatientFragment.medicineDoseInput.text.toString().trim().isEmpty()) {
+            bindingAddPatientFragment.medicineDoseLayout.error = getString(R.string.dose_error)
+            bindingAddPatientFragment.medicineDoseInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineDoseLayout.isErrorEnabled = false
+        }
+        return true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         hideBottomNavigationView(false)
+    }
+
+    inner class TextValidation(private val view: View) : TextWatcher {
+
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            when (view.id) {
+                R.id.medicine_name_input -> {
+                    validateMedicineName()
+                }
+                R.id.medicine_number_in_container_input -> {
+                    validateMedicineNumberInContainer()
+                }
+                R.id.medicine_critical_number_input -> {
+                    validateMedicineCriticalNumber()
+                }
+                R.id.medicine_dose_input -> {
+                    validateMedicineDose()
+                }
+            }
+        }
     }
 }

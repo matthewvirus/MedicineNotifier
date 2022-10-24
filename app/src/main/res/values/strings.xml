@@ -31,4 +31,9 @@
         <item>Четыре раза в день</item>
     </string-array>
 
+    <!--Errors-->
+    <string name="name_error">Введите имя лекарства!</string>
+    <string name="items_error">Введите количество таблеток в контейнере!</string>
+    <string name="critical_error">Введите пороговое значение таблеток!</string>
+    <string name="dose_error">Введите дозировку!</string>
 </resources>
