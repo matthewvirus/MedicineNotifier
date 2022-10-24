@@ -145,14 +145,10 @@ class AddMedicineFragment :
 
     private fun createMedicine(): MedicineDataModel {
         val medicine = MedicineDataModel()
-        medicine.medicineName =
-            bindingAddPatientFragment.medicineNameInput.text.toString()
-        medicine.medicineNumberInContainer =
-            bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
-        medicine.medicineMinNumberRemind =
-            bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
-        medicine.medicineDose =
-            bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
+        medicine.medicineName = bindingAddPatientFragment.medicineNameInput.text.toString()
+        medicine.medicineNumberInContainer = bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
+        medicine.medicineMinNumberRemind = bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
+        medicine.medicineDose = bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
         medicine.medicineTakingFirstTime = this.medicine.medicineTakingFirstTime
         return medicine

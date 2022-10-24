@@ -110,11 +110,11 @@ class MedicineListFragment : Fragment() {
                 medicineNameTitle.text = this.medicine.medicineName
 
                 medicineTakingTime.text = this.medicine.medicineUseTimesPerDay +
-                        ". Первое напоминание в " +
+                        getString(R.string.first_notification) +
                         SimpleDateFormat(TIME_FORMAT).format(this.medicine.medicineTakingFirstTime)
 
                 medicineNumberInContainerTitle.text =
-                    "Осталось таблеток: " + this.medicine.medicineNumberInContainer.toString()
+                    getString(R.string.medicines_left) + this.medicine.medicineNumberInContainer.toString()
             }
 
             init {

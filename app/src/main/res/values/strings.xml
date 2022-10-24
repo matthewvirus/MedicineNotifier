@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Medicine Notifier</string>
 
@@ -8,6 +9,8 @@
     <string name="medicine_name">Название лекарства</string>
     <string name="medicine_times">Время принятия</string>
     <string name="medicine_num_in_container">Осталось</string>
+    <string name="first_notification">". Первое напоминание в "</string>
+    <string name="medicines_left">Осталось таблеток: </string>
 
     <!--Strings for add_medicine_fragment.xml-->
     <string name="medicine_name_question">Название лекарства</string>
