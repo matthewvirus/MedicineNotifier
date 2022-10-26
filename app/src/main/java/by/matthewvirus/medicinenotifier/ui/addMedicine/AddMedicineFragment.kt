@@ -25,6 +25,7 @@ import by.matthewvirus.medicinenotifier.receivers.AlarmReceiver
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.ui.dialogs.TimePickerFragment
 import by.matthewvirus.medicinenotifier.util.DIALOG_TIME
+import by.matthewvirus.medicinenotifier.util.HOUR_IN_MILLIS
 import by.matthewvirus.medicinenotifier.util.REQUEST_TIME
 import by.matthewvirus.medicinenotifier.util.TIME_FORMAT
 import java.text.SimpleDateFormat
@@ -42,8 +43,7 @@ class AddMedicineFragment :
     private lateinit var pendingIntent: PendingIntent
     private var userTimesPerDayChoice = ""
     private val medicine = MedicineDataModel()
-    private var flags = 0
-    private var delayTimeInMillis: Long = 3600000
+    private var delayTimeInMillis: Long = 0
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreateView(
@@ -119,10 +119,10 @@ class AddMedicineFragment :
                                             position: Int,
                                             id: Long) {
                     when(id) {
-                        0L -> delayTimeInMillis *= 24
-                        1L -> delayTimeInMillis *= 6
-                        2L -> delayTimeInMillis *= 4
-                        3L -> delayTimeInMillis *= 3
+                        0L -> delayTimeInMillis = 24 * HOUR_IN_MILLIS
+                        1L -> delayTimeInMillis = 6 * HOUR_IN_MILLIS
+                        2L -> delayTimeInMillis = 4 * HOUR_IN_MILLIS
+                        3L -> delayTimeInMillis = 3 * HOUR_IN_MILLIS
                     }
                     val choice = resources.getStringArray(R.array.times_per_day)
                     userTimesPerDayChoice = choice[position]
@@ -168,8 +168,8 @@ class AddMedicineFragment :
         val timeInMillis = MedicineDataModel().medicineTakingFirstTime.time
         alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, flags)
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
+        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
     }
 
     private fun validateMedicineName(): Boolean {
