@@ -33,6 +33,7 @@ android {
     buildFeatures {
         viewBinding true
     }
+    namespace 'by.matthewvirus.medicinenotifier'
 }
 
 dependencies {
