@@ -67,6 +67,10 @@ class MedicineListFragment : Fragment() {
     private fun updateUI(medicines: List<MedicineDataModel>) {
         medicineAdapter = MedicineAdapter(medicines)
         bindingMedicineListFragment.medicineRecyclerView.adapter = medicineAdapter
+        bindingMedicineListFragment.emptyView.visibility = when(medicineAdapter?.itemCount) {
+            0 -> View.VISIBLE
+            else -> View.GONE
+        }
     }
 
     private fun applyForAllElements() {
@@ -96,12 +100,9 @@ class MedicineListFragment : Fragment() {
             : RecyclerView.ViewHolder(view), View.OnClickListener {
 
             private lateinit var medicine: MedicineDataModel
-            private val medicineNameTitle: TextView =
-                itemView.findViewById(R.id.medicine_item_name)
-            private val medicineTakingTime: TextView =
-                itemView.findViewById(R.id.medicines_times)
-            private val medicineNumberInContainerTitle: TextView =
-                itemView.findViewById(R.id.medicine_item_number_in_container)
+            private val medicineNameTitle: TextView = itemView.findViewById(R.id.medicine_item_name)
+            private val medicineTakingTime: TextView = itemView.findViewById(R.id.medicines_times)
+            private val medicineNumberInContainerTitle: TextView = itemView.findViewById(R.id.medicine_item_number_in_container)
 
             @SuppressLint("SetTextI18n", "SimpleDateFormat")
             fun bind(medicine: MedicineDataModel) {

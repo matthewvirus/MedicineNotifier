@@ -39,4 +39,6 @@
     <string name="items_error">Input medicines number in container!</string>
     <string name="critical_error">Input threshold!</string>
     <string name="dose_error">Input dose!</string>
+
+    <string name="empty">There is no medication yet.</string>
 </resources>

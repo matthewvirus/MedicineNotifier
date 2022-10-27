@@ -39,4 +39,6 @@
     <string name="items_error">Введите количество таблеток в контейнере!</string>
     <string name="critical_error">Введите пороговое значение таблеток!</string>
     <string name="dose_error">Введите дозировку!</string>
+
+    <string name="empty">Нет доступных курсов лечения.</string>
 </resources>
