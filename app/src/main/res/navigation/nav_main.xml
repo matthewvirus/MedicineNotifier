@@ -10,6 +10,10 @@
         android:name="by.matthewvirus.medicinenotifier.ui.medicinesList.MedicineListFragment"
         android:label="first_fragment"
         tools:layout="@layout/medicine_list_fragment">
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="1" />
     </fragment>
     <fragment
         android:id="@+id/notifications"
