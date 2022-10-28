@@ -1,33 +1,29 @@
 package by.matthewvirus.medicinenotifier.ui.medicinesList
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
+import by.matthewvirus.medicinenotifier.ui.aboutMedicine.AboutMedicineFragment
 import by.matthewvirus.medicinenotifier.ui.addMedicine.AddMedicineFragment
-import by.matthewvirus.medicinenotifier.util.TIME_FORMAT
-import java.text.SimpleDateFormat
+import by.matthewvirus.medicinenotifier.util.MedicineAdapter
 
-class MedicineListFragment : Fragment() {
+class MedicineListFragment : Fragment(), MedicineAdapter.OnItemClickListener {
 
     interface Callbacks {
         fun onFragmentTransition(fragment: Fragment)
     }
 
-    private lateinit var bindingMedicineListFragment: MedicineListFragmentBinding
-
     private var callbacks: Callbacks? = null
-    private var medicineAdapter: MedicineAdapter? = MedicineAdapter(emptyList())
+    private lateinit var bindingMedicineListFragment: MedicineListFragmentBinding
+    private var medicineAdapter: MedicineAdapter? = MedicineAdapter(emptyList(), this)
 
     private val medicinesListViewModel by lazy {
         ViewModelProvider(this)[MedicineListViewModel::class.java]
@@ -41,9 +37,8 @@ class MedicineListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View {
-        bindingMedicineListFragment =
-            MedicineListFragmentBinding.inflate(inflater, container, false)
+    ) : View {
+        bindingMedicineListFragment = MedicineListFragmentBinding.inflate(inflater, container, false)
         applyForAllElements()
         return bindingMedicineListFragment.root
     }
@@ -65,7 +60,7 @@ class MedicineListFragment : Fragment() {
     }
 
     private fun updateUI(medicines: List<MedicineDataModel>) {
-        medicineAdapter = MedicineAdapter(medicines)
+        medicineAdapter = MedicineAdapter(medicines, this)
         bindingMedicineListFragment.medicineRecyclerView.adapter = medicineAdapter
         bindingMedicineListFragment.emptyView.visibility = when(medicineAdapter?.itemCount) {
             0 -> View.VISIBLE
@@ -93,54 +88,7 @@ class MedicineListFragment : Fragment() {
         }
     }
 
-    private inner class MedicineAdapter(var medicines: List<MedicineDataModel>)
-        : RecyclerView.Adapter<MedicineAdapter.MedicineHolder>() {
-
-        private inner class MedicineHolder(view: View)
-            : RecyclerView.ViewHolder(view), View.OnClickListener {
-
-            private lateinit var medicine: MedicineDataModel
-            private val medicineNameTitle: TextView = itemView.findViewById(R.id.medicine_item_name)
-            private val medicineTakingTime: TextView = itemView.findViewById(R.id.medicines_times)
-            private val medicineNumberInContainerTitle: TextView = itemView.findViewById(R.id.medicine_item_number_in_container)
-
-            @SuppressLint("SetTextI18n", "SimpleDateFormat")
-            fun bind(medicine: MedicineDataModel) {
-                this.medicine = medicine
-
-                medicineNameTitle.text = this.medicine.medicineName
-
-                medicineTakingTime.text = this.medicine.medicineUseTimesPerDay +
-                        getString(R.string.first_notification) +
-                        SimpleDateFormat(TIME_FORMAT).format(this.medicine.medicineTakingFirstTime)
-
-                medicineNumberInContainerTitle.text =
-                    getString(R.string.medicines_left) + this.medicine.medicineNumberInContainer.toString()
-            }
-
-            init {
-                itemView.setOnClickListener(this)
-            }
-
-            override fun onClick(view: View?) {}
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedicineHolder {
-            val view = layoutInflater.inflate(viewType, parent, false)
-            return MedicineHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: MedicineHolder, position: Int) {
-            val medicine = medicines[position]
-            holder.bind(medicine)
-        }
-
-        override fun getItemCount(): Int {
-            return medicines.size
-        }
-
-        override fun getItemViewType(position: Int): Int {
-            return R.layout.medicine_list_item
-        }
+    override fun onItemClick(medicine: MedicineDataModel, position: Int) {
+        callbacks?.onFragmentTransition(AboutMedicineFragment())
     }
 }
