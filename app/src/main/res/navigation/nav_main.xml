@@ -9,7 +9,8 @@
         android:id="@+id/treatment"
         android:name="by.matthewvirus.medicinenotifier.ui.medicinesList.MedicineListFragment"
         android:label="first_fragment"
-        tools:layout="@layout/medicine_list_fragment"/>
+        tools:layout="@layout/medicine_list_fragment">
+    </fragment>
     <fragment
         android:id="@+id/notifications"
         android:name="by.matthewvirus.medicinenotifier.ui.allNotifications.AllNotificationsFragment"
@@ -19,6 +20,7 @@
         android:id="@+id/personal_status"
         android:name="by.matthewvirus.medicinenotifier.ui.personalFeelings.PersonalFeelingsFragment"
         android:label="second_fragment"
-        tools:layout="@layout/personal_feelings_fragment"/>
+        tools:layout="@layout/personal_feelings_fragment">
+    </fragment>
 
 </navigation>
