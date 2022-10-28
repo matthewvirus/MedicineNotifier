@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.navArgs
 import by.matthewvirus.medicinenotifier.R
 
 class PersonalFeelingsFragment : Fragment() {
@@ -28,5 +29,4 @@ class PersonalFeelingsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(PersonalFeelingsViewModel::class.java)
         // TODO: Use the ViewModel
     }
-
 }
