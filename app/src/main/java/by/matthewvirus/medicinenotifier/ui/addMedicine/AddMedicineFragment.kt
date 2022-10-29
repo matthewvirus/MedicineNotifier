@@ -48,8 +48,7 @@ class AddMedicineFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        bindingAddPatientFragment =
-            AddMedicineFragmentBinding.inflate(inflater, container, false)
+        bindingAddPatientFragment = AddMedicineFragmentBinding.inflate(inflater, container, false)
         applyForAllElements()
         hideBottomNavigationView(true)
         return bindingAddPatientFragment.root
