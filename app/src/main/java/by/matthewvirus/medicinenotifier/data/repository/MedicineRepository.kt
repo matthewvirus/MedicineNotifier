@@ -23,6 +23,21 @@ class MedicineRepository private constructor(context: Context) {
     fun getMedicines(): LiveData<List<MedicineDataModel>> = medicineDao.getMedicines()
     fun getMedicine(id: Int): LiveData<MedicineDataModel?> = medicineDao.getMedicine(id)
     fun deleteMedicine(id: Int) = medicineDao.deleteMedicine(id)
+    fun updateMedicine(
+        medicineName: String,
+        medicineMinNumberRemind: Int,
+        medicineDose: Int,
+        medicineUseTimesPerDay: String,
+        medicineTakingFirstTime: Date,
+        medicineId: Int
+    ) = medicineDao.updateMedicine(
+        medicineName,
+        medicineMinNumberRemind,
+        medicineDose,
+        medicineUseTimesPerDay,
+        medicineTakingFirstTime,
+        medicineId
+    )
 
     fun addMedicine(medicine: MedicineDataModel) {
         executor.execute {
@@ -31,6 +46,7 @@ class MedicineRepository private constructor(context: Context) {
     }
 
     companion object {
+
         private var INSTANCE: MedicineRepository? = null
 
         fun initialize(context: Context) {
