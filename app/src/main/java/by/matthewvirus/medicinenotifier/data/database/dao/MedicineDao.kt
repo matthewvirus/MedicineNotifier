@@ -1,9 +1,7 @@
 package by.matthewvirus.medicinenotifier.data.database.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import java.util.*
 
@@ -19,16 +17,9 @@ interface MedicineDao {
     @Insert
     fun addMedicine(medicine: MedicineDataModel)
 
-    @Query("DELETE FROM medicinedatamodel WHERE medicineId=(:id)")
-    fun deleteMedicine(id: Int)
+    @Delete
+    fun deleteMedicine(medicine: MedicineDataModel)
 
-    @Query("UPDATE medicinedatamodel SET medicineName = :medicineName, medicineMinNumberRemind = :medicineMinNumberRemind, medicineDose = :medicineDose, medicineUseTimesPerDay = :medicineUseTimesPerDay, medicineTakingFirstTime = :medicineTakingFirstTime WHERE medicineId = :medicineId")
-    fun updateMedicine(
-        medicineName: String,
-        medicineMinNumberRemind: Int,
-        medicineDose: Int,
-        medicineUseTimesPerDay: String,
-        medicineTakingFirstTime: Date,
-        medicineId: Int
-    )
+    @Update
+    fun updateMedicine(medicine: MedicineDataModel)
 }

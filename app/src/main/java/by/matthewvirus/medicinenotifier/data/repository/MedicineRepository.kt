@@ -6,7 +6,6 @@ import androidx.room.Room
 import by.matthewvirus.medicinenotifier.data.database.MedicineNotifierDatabase
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.util.DATABASE_NAME
-import java.util.*
 import java.util.concurrent.Executors
 
 class MedicineRepository private constructor(context: Context) {
@@ -22,23 +21,16 @@ class MedicineRepository private constructor(context: Context) {
 
     fun getMedicines(): LiveData<List<MedicineDataModel>> = medicineDao.getMedicines()
     fun getMedicine(id: Int): LiveData<MedicineDataModel?> = medicineDao.getMedicine(id)
-    fun deleteMedicine(id: Int) = medicineDao.deleteMedicine(id)
-    fun updateMedicine(
-        medicineName: String,
-        medicineMinNumberRemind: Int,
-        medicineDose: Int,
-        medicineUseTimesPerDay: String,
-        medicineTakingFirstTime: Date,
-        medicineId: Int
-    ) = medicineDao.updateMedicine(
-        medicineName,
-        medicineMinNumberRemind,
-        medicineDose,
-        medicineUseTimesPerDay,
-        medicineTakingFirstTime,
-        medicineId
-    )
-
+    fun deleteMedicine(medicine: MedicineDataModel) {
+        executor.execute {
+            medicineDao.deleteMedicine(medicine)
+        }
+    }
+    fun updateMedicine(medicine: MedicineDataModel) {
+        executor.execute {
+            medicineDao.updateMedicine(medicine)
+        }
+    }
     fun addMedicine(medicine: MedicineDataModel) {
         executor.execute {
             medicineDao.addMedicine(medicine)

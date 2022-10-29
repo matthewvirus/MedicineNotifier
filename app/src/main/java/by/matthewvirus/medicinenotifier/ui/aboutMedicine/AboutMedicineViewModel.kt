@@ -14,25 +14,11 @@ class AboutMedicineViewModel : ViewModel() {
         return medicineRepository.getMedicine(id)
     }
 
-    fun updateMedicine(
-        medicineName: String,
-        medicineMinNumberRemind: Int,
-        medicineDose: Int,
-        medicineUseTimesPerDay: String,
-        medicineTakingFirstTime: Date,
-        medicineId: Int
-    ) {
-        medicineRepository.updateMedicine(
-            medicineName,
-            medicineMinNumberRemind,
-            medicineDose,
-            medicineUseTimesPerDay,
-            medicineTakingFirstTime,
-            medicineId
-        )
+    fun updateMedicine(medicine: MedicineDataModel) {
+        medicineRepository.updateMedicine(medicine)
     }
 
-    fun deleteMedicine(id: Int) {
-        medicineRepository.deleteMedicine(id)
+    fun deleteMedicine(medicine: MedicineDataModel) {
+        medicineRepository.deleteMedicine(medicine)
     }
 }

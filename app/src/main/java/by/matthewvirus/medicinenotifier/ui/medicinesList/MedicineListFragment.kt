@@ -39,12 +39,13 @@ class MedicineListFragment :
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ) : View {
-        bindingMedicineListFragment = MedicineListFragmentBinding.inflate(inflater, container, false)
+        setUpBinding(inflater, container)
         applyForAllElements()
-        communicator = requireActivity() as Communicator
+        setUpCommunicator()
         return bindingMedicineListFragment.root
     }
 
@@ -78,6 +79,10 @@ class MedicineListFragment :
         addNewMedicineButtonSettings()
     }
 
+    private fun setUpBinding(inflater: LayoutInflater, container: ViewGroup?) {
+        bindingMedicineListFragment = MedicineListFragmentBinding.inflate(inflater, container, false)
+    }
+
     private fun recyclerViewSettings() {
         bindingMedicineListFragment.medicineRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -91,6 +96,10 @@ class MedicineListFragment :
                 callbacks?.onFragmentTransition(AddMedicineFragment())
             }
         }
+    }
+
+    private fun setUpCommunicator() {
+        communicator = requireActivity() as Communicator
     }
 
     override fun onItemClick(medicine: MedicineDataModel, position: Int) {
