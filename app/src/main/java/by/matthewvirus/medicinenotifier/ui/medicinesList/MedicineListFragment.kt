@@ -11,17 +11,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.aboutMedicine.AboutMedicineFragment
+import by.matthewvirus.medicinenotifier.ui.activities.Communicator
 import by.matthewvirus.medicinenotifier.ui.addMedicine.AddMedicineFragment
 import by.matthewvirus.medicinenotifier.util.MedicineAdapter
 
-class MedicineListFragment : Fragment(), MedicineAdapter.OnItemClickListener {
+class MedicineListFragment :
+    Fragment(),
+    MedicineAdapter.OnItemClickListener
+{
 
     interface Callbacks {
         fun onFragmentTransition(fragment: Fragment)
     }
 
-    private lateinit var bundle: Bundle
     private var callbacks: Callbacks? = null
+    private lateinit var communicator: Communicator
     private lateinit var bindingMedicineListFragment: MedicineListFragmentBinding
     private var medicineAdapter: MedicineAdapter? = MedicineAdapter(emptyList(), this)
 
@@ -40,6 +44,7 @@ class MedicineListFragment : Fragment(), MedicineAdapter.OnItemClickListener {
     ) : View {
         bindingMedicineListFragment = MedicineListFragmentBinding.inflate(inflater, container, false)
         applyForAllElements()
+        communicator = requireActivity() as Communicator
         return bindingMedicineListFragment.root
     }
 
@@ -89,6 +94,8 @@ class MedicineListFragment : Fragment(), MedicineAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(medicine: MedicineDataModel, position: Int) {
-        callbacks?.onFragmentTransition(AboutMedicineFragment())
+        val fragment = AboutMedicineFragment()
+        fragment.arguments = communicator.passArgumentsBetweenFragments(position)
+        callbacks?.onFragmentTransition(fragment)
     }
 }

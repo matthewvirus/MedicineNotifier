@@ -20,6 +20,9 @@
     <string name="times_per_day_question">Раз в день:</string>
     <string name="first_notification_time_question">Время первого уведомления:</string>
     <string name="create_medicine_notification">Создать напоминание!</string>
+    <string name="update_medicine_notification">Обновить напоминание!</string>
+    <string name="stop_medicine_notification">Приостановить напоминание!</string>
+    <string name="delete_medicine_notification">Удалить напоминание!</string>
     <string name="take_medicine_button">Принять</string>
     <string name="delete_medicine_button">Удалить</string>
     <string name="treatment">Лечение</string>

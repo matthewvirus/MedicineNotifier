@@ -20,6 +20,9 @@
     <string name="times_per_day_question">Times per day:</string>
     <string name="first_notification_time_question">First notification at:</string>
     <string name="create_medicine_notification">Create notification!</string>
+    <string name="update_medicine_notification">Update notification!</string>
+    <string name="stop_medicine_notification">Stop notification!</string>
+    <string name="delete_medicine_notification">Delete notification!</string>
     <string name="take_medicine_button">Take</string>
     <string name="delete_medicine_button">Delete</string>
     <string name="treatment">Treatment</string>
