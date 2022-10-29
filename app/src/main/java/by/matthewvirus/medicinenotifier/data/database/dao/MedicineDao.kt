@@ -14,11 +14,11 @@ interface MedicineDao {
     fun getMedicines(): LiveData<List<MedicineDataModel>>
 
     @Query("SELECT * FROM medicinedatamodel WHERE medicineId=(:id)")
-    fun getMedicine(id: UUID): LiveData<MedicineDataModel?>
+    fun getMedicine(id: Int): LiveData<MedicineDataModel?>
 
     @Insert
     fun addMedicine(medicine: MedicineDataModel)
 
     @Query("DELETE FROM medicinedatamodel WHERE medicineId=(:id)")
-    fun deleteMedicine(id: UUID)
+    fun deleteMedicine(id: Int)
 }

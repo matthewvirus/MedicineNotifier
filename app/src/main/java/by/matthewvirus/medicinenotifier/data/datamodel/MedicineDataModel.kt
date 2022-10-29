@@ -7,8 +7,8 @@ import java.util.*
 @Entity
 data class MedicineDataModel(
 
-    @PrimaryKey
-    var medicineId: UUID = UUID.randomUUID(),
+    @PrimaryKey(autoGenerate = true)
+    var medicineId: Int = 0,
     var medicineName: String = "",
     var medicineNumberInContainer: Int = 0,
     var medicineMinNumberRemind: Int = 0,
