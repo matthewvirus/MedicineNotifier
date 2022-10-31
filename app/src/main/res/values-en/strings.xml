@@ -44,4 +44,7 @@
     <string name="dose_error">Input dose!</string>
 
     <string name="empty">There is no medication yet.</string>
+
+    <string name="item_deleted">Medicine deleted!</string>
+    <string name="item_paused">Notifications paused!</string>
 </resources>

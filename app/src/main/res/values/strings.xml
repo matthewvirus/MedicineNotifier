@@ -44,4 +44,7 @@
     <string name="dose_error">Введите дозировку!</string>
 
     <string name="empty">Нет доступных курсов лечения.</string>
+
+    <string name="item_deleted">Лекарство удалено!</string>
+    <string name="item_paused">Уведомления приостановлены!</string>
 </resources>
