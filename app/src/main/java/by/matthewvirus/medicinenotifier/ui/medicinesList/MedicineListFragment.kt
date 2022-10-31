@@ -68,9 +68,15 @@ class MedicineListFragment :
     private fun updateUI(medicines: List<MedicineDataModel>) {
         medicineAdapter = MedicineAdapter(medicines, this)
         bindingMedicineListFragment.medicineRecyclerView.adapter = medicineAdapter
-        bindingMedicineListFragment.emptyView.visibility = when(medicineAdapter?.itemCount) {
-            0 -> View.VISIBLE
-            else -> View.GONE
+        updateViewWhenRecyclerViewIsNotEmpty(bindingMedicineListFragment.emptyView, bindingMedicineListFragment.emptyDraw)
+    }
+
+    private fun updateViewWhenRecyclerViewIsNotEmpty(vararg views: View) {
+        for (view in views) {
+            view.visibility = when(medicineAdapter?.itemCount) {
+                0 -> View.VISIBLE
+                else -> View.GONE
+            }
         }
     }
 

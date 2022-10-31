@@ -47,4 +47,9 @@
 
     <string name="item_deleted">Лекарство удалено!</string>
     <string name="item_paused">Уведомления приостановлены!</string>
+    <string name="notifications_active">Уведомления активны</string>
+    <string name="empty_image_with_a_calendar_and_pills">Картинка с ткалендариком и таблетками</string>
+
+    <string name="notification_title">Medicine Notifier</string>
+    <string name="notification_message">Время принять лекарства!</string>
 </resources>

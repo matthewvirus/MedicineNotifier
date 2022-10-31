@@ -47,4 +47,9 @@
 
     <string name="item_deleted">Medicine deleted!</string>
     <string name="item_paused">Notifications paused!</string>
+    <string name="notifications_active">Notifications are active</string>
+    <string name="empty_image_with_a_calendar_and_pills">Empty image with a calendar and pills</string>
+
+    <string name="notification_title">Medicine Notifier</string>
+    <string name="notification_message">You need to get medication!</string>
 </resources>

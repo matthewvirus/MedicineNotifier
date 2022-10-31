@@ -20,8 +20,6 @@ const val NOTIFICATION_ID = 1
 const val CHANNEL_ID = "channel1"
 const val CHANNEL_NAME = "Medicine Reminder"
 const val CHANNEL_DESCRIPTION = "Medicine Reminder Description"
-const val NOTIFICATION_TITLE = "Medicine Notifier"
-const val NOTIFICATION_MESSAGE = "You need to get medication!"
 const val HOUR_IN_MILLIS: Long = 3600000
 
 // Notifications args

@@ -14,5 +14,7 @@ data class MedicineDataModel(
     var medicineMinNumberRemind: Int = 0,
     var medicineDose: Int = 0,
     var medicineUseTimesPerDay: String = "",
+    var medicineUseTimesPerDayInt: Int = 0,
+    var medicineStatus: Int = 0,
     var medicineTakingFirstTime: Date = Date()
 )

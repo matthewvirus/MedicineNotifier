@@ -17,11 +17,8 @@ class MedicineNotifierApplication: Application() {
     }
 
     private fun createNotificationChannel() {
-        val name = CHANNEL_NAME
-        val description = CHANNEL_DESCRIPTION
-        val importance = NotificationManager.IMPORTANCE_DEFAULT
-        val channel = NotificationChannel(CHANNEL_ID, name, importance)
-        channel.description = description
+        val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+        channel.description = CHANNEL_DESCRIPTION
         val notificationManager = getSystemService(NotificationManager::class.java)
         notificationManager.createNotificationChannel(channel)
     }

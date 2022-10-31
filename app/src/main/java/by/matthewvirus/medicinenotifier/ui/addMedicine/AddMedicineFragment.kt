@@ -40,6 +40,7 @@ class AddMedicineFragment :
     private lateinit var alarmManager: AlarmManager
     private lateinit var pendingIntent: PendingIntent
     private var userTimesPerDayChoice = ""
+    private var userTimesPerDayChoiceInt = 0
     private val medicine = MedicineDataModel()
     private var delayTimeInMillis: Long = 0
 
@@ -86,6 +87,7 @@ class AddMedicineFragment :
         setTime(medicine.medicineTakingFirstTime)
     }
 
+
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun setTime(timeToFormat: Date) {
         bindingAddPatientFragment.firstNotificationTime.text =
@@ -106,24 +108,25 @@ class AddMedicineFragment :
     }
 
     private fun selectSpinnerItem() {
-        bindingAddPatientFragment.medicineTimesPerDaySpinner.onItemSelectedListener =
-            object: AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {}
+        bindingAddPatientFragment.medicineTimesPerDaySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
 
-                override fun onItemSelected(parent: AdapterView<*>?,
-                                            view: View?,
-                                            position: Int,
-                                            id: Long) {
-                    when(id) {
-                        0L -> delayTimeInMillis = 24 * HOUR_IN_MILLIS
-                        1L -> delayTimeInMillis = 6 * HOUR_IN_MILLIS
-                        2L -> delayTimeInMillis = 4 * HOUR_IN_MILLIS
-                        3L -> delayTimeInMillis = 3 * HOUR_IN_MILLIS
-                    }
-                    val choice = resources.getStringArray(R.array.times_per_day)
-                    userTimesPerDayChoice = choice[position]
+            override fun onNothingSelected(parent: AdapterView<*>?) { }
+
+            override fun onItemSelected(parent: AdapterView<*>?,
+                                        view: View?,
+                                        position: Int,
+                                        id: Long) {
+                when(id) {
+                    0L -> delayTimeInMillis = 24 * HOUR_IN_MILLIS
+                    1L -> delayTimeInMillis = 6 * HOUR_IN_MILLIS
+                    2L -> delayTimeInMillis = 4 * HOUR_IN_MILLIS
+                    3L -> delayTimeInMillis = 3 * HOUR_IN_MILLIS
                 }
+                val choice = resources.getStringArray(R.array.times_per_day)
+                userTimesPerDayChoice = choice[position]
+                userTimesPerDayChoiceInt = position
             }
+        }
     }
 
     private fun selectFirstTime() {
@@ -146,6 +149,7 @@ class AddMedicineFragment :
         medicine.medicineMinNumberRemind = bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
         medicine.medicineDose = bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
+        medicine.medicineUseTimesPerDayInt = userTimesPerDayChoiceInt
         medicine.medicineTakingFirstTime = this.medicine.medicineTakingFirstTime
         return medicine
     }

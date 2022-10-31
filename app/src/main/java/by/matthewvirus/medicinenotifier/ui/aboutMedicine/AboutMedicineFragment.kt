@@ -2,6 +2,9 @@ package by.matthewvirus.medicinenotifier.ui.aboutMedicine
 
 import android.os.Bundle
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -11,6 +14,7 @@ import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AboutMedicineFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
+import by.matthewvirus.medicinenotifier.util.HOUR_IN_MILLIS
 import by.matthewvirus.medicinenotifier.util.INDEX_ARGUMENT
 import com.google.android.material.snackbar.Snackbar
 
@@ -21,7 +25,11 @@ class AboutMedicineFragment :
 
     private var index: Int? = 0
     private lateinit var bindingAboutMedicineFragment: AboutMedicineFragmentBinding
+    private lateinit var spinner: Spinner
     private var medicine = MedicineDataModel()
+    private var delayTimeInMillis: Long = 0
+    private var userTimesPerDayChoice = ""
+    private var userTimesPerDayChoiceInt = 0
 
     private val aboutMedicineViewModel by lazy {
         ViewModelProvider(this)[AboutMedicineViewModel::class.java]
@@ -36,6 +44,7 @@ class AboutMedicineFragment :
         hideBottomNavigationView(true)
         getIndexFromParentFragment()
         setUpBinding(inflater, container)
+        setMedicineTimesPerDayAdapter()
         setUpUpdateMedicineButton()
         return bindingAboutMedicineFragment.root
     }
@@ -91,6 +100,41 @@ class AboutMedicineFragment :
         bindingAboutMedicineFragment.medicineNameInput.setText(medicine.medicineName)
         bindingAboutMedicineFragment.medicineCriticalNumberInput.setText(medicine.medicineMinNumberRemind.toString())
         bindingAboutMedicineFragment.medicineDoseInput.setText(medicine.medicineDose.toString())
+        setUpTheSpinner()
+    }
+
+    private fun setMedicineTimesPerDayAdapter() {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.times_per_day,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            bindingAboutMedicineFragment.medicineTimesPerDaySpinner.adapter = adapter
+            selectSpinnerItem()
+        }
+    }
+
+    private fun selectSpinnerItem() {
+        bindingAboutMedicineFragment.medicineTimesPerDaySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
+
+            override fun onItemSelected(parent: AdapterView<*>?,
+                                        view: View?,
+                                        position: Int,
+                                        id: Long) {
+                when(id) {
+                    0L -> delayTimeInMillis = 24 * HOUR_IN_MILLIS
+                    1L -> delayTimeInMillis = 6 * HOUR_IN_MILLIS
+                    2L -> delayTimeInMillis = 4 * HOUR_IN_MILLIS
+                    3L -> delayTimeInMillis = 3 * HOUR_IN_MILLIS
+                }
+                val choice = resources.getStringArray(R.array.times_per_day)
+                userTimesPerDayChoice = choice[position]
+                userTimesPerDayChoiceInt = position
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) { }
+        }
     }
 
     private fun setUpBinding(inflater: LayoutInflater, container: ViewGroup?) {
@@ -101,6 +145,8 @@ class AboutMedicineFragment :
         medicine.medicineName = bindingAboutMedicineFragment.medicineNameInput.text.toString()
         medicine.medicineMinNumberRemind = bindingAboutMedicineFragment.medicineCriticalNumberInput.text.toString().toInt()
         medicine.medicineDose = bindingAboutMedicineFragment.medicineDoseInput.text.toString().toInt()
+        medicine.medicineUseTimesPerDay = userTimesPerDayChoice
+        medicine.medicineUseTimesPerDayInt = userTimesPerDayChoiceInt
         return medicine
     }
 
@@ -134,5 +180,10 @@ class AboutMedicineFragment :
 
     private fun returnToHomeActivity() {
         activity?.supportFragmentManager?.popBackStack()
+    }
+
+    private fun setUpTheSpinner() {
+        spinner = bindingAboutMedicineFragment.medicineTimesPerDaySpinner
+        spinner.setSelection(medicine.medicineUseTimesPerDayInt)
     }
 }
