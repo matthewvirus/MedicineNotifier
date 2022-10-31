@@ -20,7 +20,6 @@ class MedicineRepository private constructor(context: Context) {
     private val executor = Executors.newSingleThreadExecutor()
 
     fun getMedicines(): LiveData<List<MedicineDataModel>> = medicineDao.getMedicines()
-    fun getMedicine(id: Int): LiveData<MedicineDataModel?> = medicineDao.getMedicine(id)
     fun deleteMedicine(medicine: MedicineDataModel) {
         executor.execute {
             medicineDao.deleteMedicine(medicine)

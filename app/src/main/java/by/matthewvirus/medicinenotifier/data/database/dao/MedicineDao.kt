@@ -11,9 +11,6 @@ interface MedicineDao {
     @Query("SELECT * FROM medicinedatamodel")
     fun getMedicines(): LiveData<List<MedicineDataModel>>
 
-    @Query("SELECT * FROM medicinedatamodel WHERE medicineId=(:id)")
-    fun getMedicine(id: Int): LiveData<MedicineDataModel?>
-
     @Insert
     fun addMedicine(medicine: MedicineDataModel)
 

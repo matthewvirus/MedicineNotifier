@@ -2,7 +2,6 @@ package by.matthewvirus.medicinenotifier.ui.aboutMedicine
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -13,6 +12,7 @@ import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.databinding.AboutMedicineFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.util.INDEX_ARGUMENT
+import com.google.android.material.snackbar.Snackbar
 
 class AboutMedicineFragment :
     Fragment(),
@@ -42,12 +42,12 @@ class AboutMedicineFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        aboutMedicineViewModel.getMedicine(index!!).observe(
+        aboutMedicineViewModel.getMedicines().observe(
             viewLifecycleOwner
         ) {
-            medicine ->
-            medicine?.let {
-                this.medicine = medicine
+            medicines ->
+            medicines?.let {
+                medicine = medicines[index!!]
                 updateUI(medicine)
             }
         }
@@ -79,7 +79,6 @@ class AboutMedicineFragment :
                     R.id.action_delete -> {
                         stopNotification()
                         deleteMedicine()
-                        Toast.makeText(context, "Delete", Toast.LENGTH_SHORT).show()
                         true
                     }
                     else -> false
@@ -109,14 +108,15 @@ class AboutMedicineFragment :
         bindingAboutMedicineFragment.updateMedicineNotificationButton.apply {
             setOnClickListener {
                 AboutMedicineViewModel().updateMedicine(createMedicineToUpdate())
-                activity?.supportFragmentManager?.popBackStack()
+                returnToHomeActivity()
             }
         }
     }
 
     private fun deleteMedicine() {
         AboutMedicineViewModel().deleteMedicine(medicine)
-        activity?.supportFragmentManager?.popBackStack()
+        Snackbar.make(requireView(), R.string.item_deleted, Snackbar.LENGTH_SHORT).show()
+        returnToHomeActivity()
     }
 
     private fun stopNotification() {
@@ -124,10 +124,15 @@ class AboutMedicineFragment :
     }
 
     private fun pauseNotification() {
-        // TODO: Not implemented yet
+        Snackbar.make(requireView(), R.string.item_paused, Snackbar.LENGTH_SHORT).show()
+        returnToHomeActivity()
     }
 
     private fun getIndexFromParentFragment() {
-        index = (arguments?.getInt(INDEX_ARGUMENT))?.plus(1)
+        index = arguments?.getInt(INDEX_ARGUMENT)
+    }
+
+    private fun returnToHomeActivity() {
+        activity?.supportFragmentManager?.popBackStack()
     }
 }

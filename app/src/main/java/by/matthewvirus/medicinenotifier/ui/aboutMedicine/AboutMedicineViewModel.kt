@@ -4,14 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
 import by.matthewvirus.medicinenotifier.data.repository.MedicineRepository
-import java.util.*
 
 class AboutMedicineViewModel : ViewModel() {
 
     private val medicineRepository = MedicineRepository.get()
 
-    fun getMedicine(id: Int): LiveData<MedicineDataModel?> {
-        return medicineRepository.getMedicine(id)
+    fun getMedicines(): LiveData<List<MedicineDataModel>> {
+        return medicineRepository.getMedicines()
     }
 
     fun updateMedicine(medicine: MedicineDataModel) {
