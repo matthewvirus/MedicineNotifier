@@ -19,9 +19,13 @@
     <string name="medicine_dose_question">Дозировка</string>
     <string name="times_per_day_question">Раз в день:</string>
     <string name="first_notification_time_question">Время первого уведомления:</string>
+    <string name="second_notification_time_question">Время второго уведомления:</string>
+    <string name="third_notification_time_question">Время третьего уведомления:</string>
+    <string name="fourth_notification_time_question">Время четвертого уведомления:</string>
     <string name="create_medicine_notification">Создать напоминание!</string>
     <string name="update_medicine_notification">Обновить напоминание!</string>
     <string name="stop_medicine_notification">Приостановить напоминание!</string>
+    <string name="continue_medicine_notification">Продолжить напоминание!</string>
     <string name="delete_medicine_notification">Удалить напоминание!</string>
     <string name="take_medicine_button">Принять</string>
     <string name="delete_medicine_button">Удалить</string>
@@ -47,9 +51,13 @@
 
     <string name="item_deleted">Лекарство удалено!</string>
     <string name="item_paused">Уведомления приостановлены!</string>
+    <string name="item_already_paused">Уведомления уже приостановлены!</string>
+    <string name="item_already_working">Уведомления уже активны!</string>
     <string name="notifications_active">Уведомления активны</string>
     <string name="empty_image_with_a_calendar_and_pills">Картинка с ткалендариком и таблетками</string>
 
     <string name="notification_title">Medicine Notifier</string>
     <string name="notification_message">Время принять лекарства!</string>
+
+    <string name="take_medicine">Принять лекарство!</string>
 </resources>

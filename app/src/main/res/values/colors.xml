@@ -12,4 +12,7 @@
     <color name="light_blue_primary_l">#82b1ff</color>
     <color name="light_blue_primary_d">#00569a</color>
     <color name="secondary_black">#212121</color>
+
+    <color name="green">#8bc34a</color>
+    <color name="red">#ff5722</color>
 </resources>

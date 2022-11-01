@@ -19,9 +19,13 @@
     <string name="medicine_dose_question">Dose</string>
     <string name="times_per_day_question">Times per day:</string>
     <string name="first_notification_time_question">First notification at:</string>
+    <string name="second_notification_time_question">Second notification at:</string>
+    <string name="third_notification_time_question">Third notification at:</string>
+    <string name="fourth_notification_time_question">Fourth notification at:</string>
     <string name="create_medicine_notification">Create notification!</string>
     <string name="update_medicine_notification">Update notification!</string>
-    <string name="stop_medicine_notification">Stop notification!</string>
+    <string name="stop_medicine_notification">Pause notification!</string>
+    <string name="continue_medicine_notification">Continue notification!</string>
     <string name="delete_medicine_notification">Delete notification!</string>
     <string name="take_medicine_button">Take</string>
     <string name="delete_medicine_button">Delete</string>
@@ -47,9 +51,13 @@
 
     <string name="item_deleted">Medicine deleted!</string>
     <string name="item_paused">Notifications paused!</string>
+    <string name="item_already_paused">Notifications are already paused!</string>
+    <string name="item_already_working">Notifications are already working!</string>
     <string name="notifications_active">Notifications are active</string>
     <string name="empty_image_with_a_calendar_and_pills">Empty image with a calendar and pills</string>
 
     <string name="notification_title">Medicine Notifier</string>
     <string name="notification_message">You need to get medication!</string>
+
+    <string name="take_medicine">Take the medicine!</string>
 </resources>
