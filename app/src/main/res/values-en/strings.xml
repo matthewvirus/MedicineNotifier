@@ -60,7 +60,7 @@
     <string name="notification_message">Don\'t forget about</string>
 
     <string name="take_medicine">Take the medicine!</string>
-    <string name="warning_text">Attention! There are not enough pills in the container!</string>
+    <string name="warning_text">Attention! There are not enough pills in container!</string>
     <string name="warning">warning</string>
     <string name="zero_error">Not enough pills</string>
 </resources>
