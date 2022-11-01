@@ -35,6 +35,7 @@ class HomeActivity :
         setContentView(homeBinding.root)
 
         bottomNavigationView = homeBinding.bottomNavigationView
+//        bottomNavigationView.visibility = View.GONE
 
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.activity_main_nav_host_fragment) as NavHostFragment
@@ -66,6 +67,7 @@ class HomeActivity :
         bottomNavigationView.visibility = when(flag) {
             true -> View.GONE
             false -> View.VISIBLE
+            // false -> View.GONE // Here I gonna implement many functions but it isn't for course project
         }
     }
 }
