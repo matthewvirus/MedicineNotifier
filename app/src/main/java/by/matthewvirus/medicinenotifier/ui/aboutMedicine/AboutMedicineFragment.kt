@@ -1,5 +1,9 @@
 package by.matthewvirus.medicinenotifier.ui.aboutMedicine
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
@@ -30,6 +34,8 @@ class AboutMedicineFragment :
     private var delayTimeInMillis: Long = 0
     private var userTimesPerDayChoice = ""
     private var userTimesPerDayChoiceInt = 0
+    private lateinit var alarmManager: AlarmManager
+    private lateinit var pendingIntent: PendingIntent
 
     private val aboutMedicineViewModel by lazy {
         ViewModelProvider(this)[AboutMedicineViewModel::class.java]
@@ -46,6 +52,7 @@ class AboutMedicineFragment :
         setUpBinding(inflater, container)
         setMedicineTimesPerDayAdapter()
         setUpUpdateMedicineButton()
+        setUpTakeMedicineButton()
         return bindingAboutMedicineFragment.root
     }
 
@@ -86,8 +93,12 @@ class AboutMedicineFragment :
                         true
                     }
                     R.id.action_delete -> {
-                        stopNotification()
+                        pauseNotification()
                         deleteMedicine()
+                        true
+                    }
+                    R.id.action_resume -> {
+                        continueNotification()
                         true
                     }
                     else -> false
@@ -159,19 +170,57 @@ class AboutMedicineFragment :
         }
     }
 
+    private fun setUpTakeMedicineButton() {
+        bindingAboutMedicineFragment.takeMedicineButton.apply {
+            setOnClickListener {
+                createMedicineToUpdate().medicineNumberInContainer -= medicine.medicineDose
+                AboutMedicineViewModel().updateMedicine(createMedicineToUpdate())
+                returnToHomeActivity()
+            }
+        }
+    }
+
     private fun deleteMedicine() {
         AboutMedicineViewModel().deleteMedicine(medicine)
         Snackbar.make(requireView(), R.string.item_deleted, Snackbar.LENGTH_SHORT).show()
         returnToHomeActivity()
     }
 
-    private fun stopNotification() {
-        // TODO: Not implemented yet
+    private fun pauseNotification() {
+        val medicineToUpdate = createMedicineToUpdate()
+        if (medicineToUpdate.medicineStatus == 0) {
+            createSnackBar(R.string.item_already_paused)
+            return
+        }
+        medicineToUpdate.medicineStatus = 0
+        AboutMedicineViewModel().updateMedicine(medicineToUpdate)
+        cancelPendingIntent()
+        createSnackBar(R.string.item_paused)
+        returnToHomeActivity()
     }
 
-    private fun pauseNotification() {
-        Snackbar.make(requireView(), R.string.item_paused, Snackbar.LENGTH_SHORT).show()
+    private fun continueNotification() {
+        val medicineToUpdate = createMedicineToUpdate()
+        if (medicineToUpdate.medicineStatus == 1) {
+            createSnackBar(R.string.item_already_working)
+            return
+        }
+        medicineToUpdate.medicineStatus = 1
+        AboutMedicineViewModel().updateMedicine(medicineToUpdate)
+        cancelPendingIntent()
+        createSnackBar(R.string.item_paused)
         returnToHomeActivity()
+    }
+
+    private fun cancelPendingIntent() {
+        val intent = Intent(context, AboutMedicineFragment::class.java)
+        alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        pendingIntent = PendingIntent.getService(context, index!!, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent.cancel()
+    }
+
+    private fun createSnackBar(textResource: Int) {
+        Snackbar.make(requireView(), textResource, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun getIndexFromParentFragment() {
