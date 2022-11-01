@@ -41,8 +41,9 @@ class AddMedicineFragment :
     private lateinit var pendingIntent: PendingIntent
     private var userTimesPerDayChoice = ""
     private var userTimesPerDayChoiceInt = 0
-    private val medicine = MedicineDataModel()
+    private var medicineTime = Date()
     private var delayTimeInMillis: Long = 0
+    private var notificationCode = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,17 +61,23 @@ class AddMedicineFragment :
     }
 
     override fun onTimeSelected(time: Date) {
-        medicine.medicineTakingFirstTime = time
+        medicineTime = time
         updateTime()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        hideBottomNavigationView(false)
     }
 
     private fun applyForAllElements() {
         bindingAddPatientFragment.firstNotificationTime.paintFlags = Paint.UNDERLINE_TEXT_FLAG
-        setTime(Date())
+        setFirstTime(Date())
         setMedicineTimesPerDayAdapter()
         selectFirstTime()
         createNotification()
         setUpListeners()
+        createNotificationCode()
     }
 
     private fun isValid(): Boolean =
@@ -84,12 +91,11 @@ class AddMedicineFragment :
     }
 
     private fun updateTime() {
-        setTime(medicine.medicineTakingFirstTime)
+        setFirstTime(medicineTime)
     }
 
-
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    private fun setTime(timeToFormat: Date) {
+    private fun setFirstTime(timeToFormat: Date) {
         bindingAddPatientFragment.firstNotificationTime.text =
             getString(R.string.first_notification_time_question) + " " +
                 SimpleDateFormat(TIME_FORMAT).format(timeToFormat)
@@ -117,10 +123,18 @@ class AddMedicineFragment :
                                         position: Int,
                                         id: Long) {
                 when(id) {
-                    0L -> delayTimeInMillis = 24 * HOUR_IN_MILLIS
-                    1L -> delayTimeInMillis = 6 * HOUR_IN_MILLIS
-                    2L -> delayTimeInMillis = 4 * HOUR_IN_MILLIS
-                    3L -> delayTimeInMillis = 3 * HOUR_IN_MILLIS
+                    0L -> {
+                        delayTimeInMillis = 24 * HOUR_IN_MILLIS
+                    }
+                    1L -> {
+                        delayTimeInMillis = 6 * HOUR_IN_MILLIS
+                    }
+                    2L -> {
+                        delayTimeInMillis = 4 * HOUR_IN_MILLIS
+                    }
+                    3L -> {
+                        delayTimeInMillis = 3 * HOUR_IN_MILLIS
+                    }
                 }
                 val choice = resources.getStringArray(R.array.times_per_day)
                 userTimesPerDayChoice = choice[position]
@@ -131,7 +145,7 @@ class AddMedicineFragment :
 
     private fun selectFirstTime() {
         bindingAddPatientFragment.firstNotificationTime.setOnClickListener {
-            TimePickerFragment.newInstance(medicine.medicineTakingFirstTime).apply {
+            TimePickerFragment.newInstance(medicineTime).apply {
                 setTargetFragment(
                     this@AddMedicineFragment,
                     REQUEST_TIME)
@@ -142,22 +156,24 @@ class AddMedicineFragment :
         }
     }
 
-    private fun createMedicine(): MedicineDataModel {
+    private fun getCreatedMedicine(): MedicineDataModel {
         val medicine = MedicineDataModel()
+        medicine.medicineId
         medicine.medicineName = bindingAddPatientFragment.medicineNameInput.text.toString()
         medicine.medicineNumberInContainer = bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
         medicine.medicineMinNumberRemind = bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
         medicine.medicineDose = bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
         medicine.medicineUseTimesPerDayInt = userTimesPerDayChoiceInt
-        medicine.medicineTakingFirstTime = this.medicine.medicineTakingFirstTime
+        medicine.medicineTakingFirstTime = medicineTime
+        medicine.medicineStatus = 1
         return medicine
     }
 
     private fun createNotification() {
         bindingAddPatientFragment.createMedicineNotificationButton.setOnClickListener {
             if (isValid()) {
-                AddMedicineViewModel().addMedicine(createMedicine())
+                AddMedicineViewModel().addMedicine(getCreatedMedicine())
                 activity?.supportFragmentManager?.popBackStack()
                 startAlarm(context)
             }
@@ -165,11 +181,10 @@ class AddMedicineFragment :
     }
 
     private fun startAlarm(context: Context?) {
-        val timeInMillis = MedicineDataModel().medicineTakingFirstTime.time
-        alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(context, AlarmReceiver::class.java)
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, delayTimeInMillis, pendingIntent)
+        alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
+        pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, medicineTime.time, delayTimeInMillis, pendingIntent)
     }
 
     private fun validateMedicineName(): Boolean {
@@ -216,9 +231,15 @@ class AddMedicineFragment :
         return true
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        hideBottomNavigationView(false)
+    private fun createNotificationCode() {
+        AddMedicineViewModel().getMedicines().observe(
+            viewLifecycleOwner
+        ) {
+            medicines ->
+            medicines.let {
+                notificationCode = medicines.size
+            }
+        }
     }
 
     inner class TextValidation(private val view: View) : TextWatcher {
