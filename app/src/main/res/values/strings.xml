@@ -57,7 +57,10 @@
     <string name="empty_image_with_a_calendar_and_pills">Картинка с ткалендариком и таблетками</string>
 
     <string name="notification_title">Medicine Notifier</string>
-    <string name="notification_message">Время принять лекарства!</string>
+    <string name="notification_message">Не забудьте принять</string>
 
     <string name="take_medicine">Принять лекарство!</string>
+    <string name="warning_text">Внимание! Таблеток в контейнере мало!</string>
+    <string name="warning">warning</string>
+    <string name="zero_error">Таблекток недостаточно</string>
 </resources>

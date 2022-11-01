@@ -109,6 +109,7 @@ class AboutMedicineFragment :
 
     private fun updateUI(medicine: MedicineDataModel) {
         bindingAboutMedicineFragment.medicineNameInput.setText(medicine.medicineName)
+        bindingAboutMedicineFragment.medicineNumberInContainerInput.setText(medicine.medicineNumberInContainer.toString())
         bindingAboutMedicineFragment.medicineCriticalNumberInput.setText(medicine.medicineMinNumberRemind.toString())
         bindingAboutMedicineFragment.medicineDoseInput.setText(medicine.medicineDose.toString())
         setUpTheSpinner()
@@ -154,6 +155,7 @@ class AboutMedicineFragment :
 
     private fun createMedicineToUpdate(): MedicineDataModel {
         medicine.medicineName = bindingAboutMedicineFragment.medicineNameInput.text.toString()
+        medicine.medicineNumberInContainer = bindingAboutMedicineFragment.medicineNumberInContainerInput.text.toString().toInt()
         medicine.medicineMinNumberRemind = bindingAboutMedicineFragment.medicineCriticalNumberInput.text.toString().toInt()
         medicine.medicineDose = bindingAboutMedicineFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
@@ -173,8 +175,15 @@ class AboutMedicineFragment :
     private fun setUpTakeMedicineButton() {
         bindingAboutMedicineFragment.takeMedicineButton.apply {
             setOnClickListener {
-                createMedicineToUpdate().medicineNumberInContainer -= medicine.medicineDose
-                AboutMedicineViewModel().updateMedicine(createMedicineToUpdate())
+                if (medicine.medicineNumberInContainer > 0 && medicine.medicineNumberInContainer >= medicine.medicineMinNumberRemind) {
+                    medicine.medicineNumberInContainer -= medicine.medicineDose
+                } else if (medicine.medicineNumberInContainer < medicine.medicineMinNumberRemind) {
+                    createSnackBar(R.string.zero_error)
+                } else {
+                    medicine.medicineNumberInContainer = 0
+                    createSnackBar(R.string.zero_error)
+                }
+                AboutMedicineViewModel().updateMedicine(medicine)
                 returnToHomeActivity()
             }
         }
@@ -208,7 +217,7 @@ class AboutMedicineFragment :
         medicineToUpdate.medicineStatus = 1
         AboutMedicineViewModel().updateMedicine(medicineToUpdate)
         cancelPendingIntent()
-        createSnackBar(R.string.item_paused)
+        createSnackBar(R.string.notifications_active)
         returnToHomeActivity()
     }
 

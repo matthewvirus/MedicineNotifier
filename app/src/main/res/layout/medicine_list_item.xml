@@ -49,7 +49,7 @@
             android:textSize="16sp"
             android:paddingBottom="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/medicine_item_name"/>
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_name"/>
 
         <TextView
             android:id="@+id/medicine_item_number_in_container"
@@ -60,6 +60,31 @@
             android:paddingBottom="4dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/medicines_times"/>
+
+        <ImageView
+            android:id="@+id/warning_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_number_in_container"
+            android:src="@drawable/ic_warning"
+            android:contentDescription="@string/warning"
+            app:tint="@color/yellow_warn" />
+
+        <TextView
+            android:id="@+id/warning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/warning_text"
+            android:textColor="@color/black"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/warning_image"
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_number_in_container"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

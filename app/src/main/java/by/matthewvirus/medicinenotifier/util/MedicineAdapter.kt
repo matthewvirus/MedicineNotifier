@@ -32,6 +32,8 @@ class MedicineAdapter(
         private val medicineTakingTime: TextView = itemView.findViewById(R.id.medicines_times)
         private val medicineNumberInContainerTitle: TextView = itemView.findViewById(R.id.medicine_item_number_in_container)
         private val medicineStatusImageView: ImageView = itemView.findViewById(R.id.medicine_active_status)
+        private val medicineWarningImageView: ImageView = itemView.findViewById(R.id.warning_image)
+        private val medicineWarningTextView: TextView = itemView.findViewById(R.id.warning_text)
 
         @SuppressLint("SetTextI18n", "SimpleDateFormat")
         fun bind(medicine: MedicineDataModel) {
@@ -49,6 +51,13 @@ class MedicineAdapter(
                     ImageViewCompat.setImageTintList(medicineStatusImageView, ColorStateList.valueOf(Color.parseColor("#8bc34a")))
 
                 }
+            }
+            if (medicine.medicineNumberInContainer <= medicine.medicineMinNumberRemind) {
+                medicineWarningImageView.visibility = View.VISIBLE
+                medicineWarningTextView.visibility = View.VISIBLE
+            } else {
+                medicineWarningImageView.visibility = View.GONE
+                medicineWarningTextView.visibility = View.GONE
             }
         }
     }

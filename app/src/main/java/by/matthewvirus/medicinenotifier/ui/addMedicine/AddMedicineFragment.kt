@@ -182,6 +182,8 @@ class AddMedicineFragment :
 
     private fun startAlarm(context: Context?) {
         val intent = Intent(context, AlarmReceiver::class.java)
+        val medicineName = getCreatedMedicine().medicineName
+        intent.putExtra("id", medicineName)
         alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
         pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, medicineTime.time, delayTimeInMillis, pendingIntent)

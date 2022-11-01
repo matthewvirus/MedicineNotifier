@@ -53,11 +53,14 @@
     <string name="item_paused">Notifications paused!</string>
     <string name="item_already_paused">Notifications are already paused!</string>
     <string name="item_already_working">Notifications are already working!</string>
-    <string name="notifications_active">Notifications are active</string>
+    <string name="notifications_active">Notifications are active!</string>
     <string name="empty_image_with_a_calendar_and_pills">Empty image with a calendar and pills</string>
 
     <string name="notification_title">Medicine Notifier</string>
-    <string name="notification_message">You need to get medication!</string>
+    <string name="notification_message">Don\'t forget about</string>
 
     <string name="take_medicine">Take the medicine!</string>
+    <string name="warning_text">Attention! There are not enough pills in the container!</string>
+    <string name="warning">warning</string>
+    <string name="zero_error">Not enough pills</string>
 </resources>
