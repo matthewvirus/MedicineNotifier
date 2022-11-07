@@ -1,3 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Medicine Notifier</string>
+
+    <!--Strings for Smart Talk-->
+    <string name="creating_of_new_medicine">Добавление нового лекарства</string>
+
+    <!--Strings for medicine_list_item.xml-->
+    <string name="medicine_name">Название лекарства</string>
+    <string name="medicine_times">Время принятия</string>
+    <string name="medicine_num_in_container">Осталось</string>
+    <string name="first_notification">". Первое напоминание в "</string>
+    <string name="medicines_left">Осталось таблеток: </string>
+
+    <!--Strings for add_medicine_fragment.xml-->
+    <string name="medicine_name_question">Название лекарства</string>
+    <string name="number_of_medicines_in_container_question">Таблеток в контейнере</string>
+    <string name="medicine_critical_number_question">Пороговое значение таблеток</string>
+    <string name="medicine_dose_question">Дозировка</string>
+    <string name="times_per_day_question">Раз в день:</string>
+    <string name="first_notification_time_question">Время первого уведомления:</string>
+    <string name="second_notification_time_question">Время второго уведомления:</string>
+    <string name="third_notification_time_question">Время третьего уведомления:</string>
+    <string name="fourth_notification_time_question">Время четвертого уведомления:</string>
+    <string name="create_medicine_notification">Создать напоминание!</string>
+    <string name="update_medicine_notification">Обновить напоминание!</string>
+    <string name="stop_medicine_notification">Приостановить напоминание!</string>
+    <string name="continue_medicine_notification">Продолжить напоминание!</string>
+    <string name="delete_medicine_notification">Удалить напоминание!</string>
+    <string name="take_medicine_button">Принять</string>
+    <string name="delete_medicine_button">Удалить</string>
+    <string name="treatment">Лечение</string>
+    <string name="notifications">Уведомления</string>
+    <string name="personal_status">Самочувствие</string>
+
+    <!--Strings for spinner-->
+    <string-array name="times_per_day">
+        <item>Один раз в день</item>
+        <item>Два раза в день</item>
+        <item>Три раза в день</item>
+        <item>Четыре раза в день</item>
+    </string-array>
+
+    <!--Errors-->
+    <string name="name_error">Введите имя лекарства!</string>
+    <string name="items_error">Введите количество таблеток в контейнере!</string>
+    <string name="critical_error">Введите пороговое значение таблеток!</string>
+    <string name="dose_error">Введите дозировку!</string>
+
+    <string name="empty">Нет доступных курсов лечения.</string>
+
+    <string name="item_deleted">Лекарство удалено!</string>
+    <string name="item_paused">Уведомления приостановлены!</string>
+    <string name="item_already_paused">Уведомления уже приостановлены!</string>
+    <string name="item_already_working">Уведомления уже активны!</string>
+    <string name="notifications_active">Уведомления активны</string>
+    <string name="empty_image_with_a_calendar_and_pills">Картинка с ткалендариком и таблетками</string>
+
+    <string name="notification_title">Medicine Notifier</string>
+    <string name="notification_message">Не забудьте принять</string>
+
+    <string name="take_medicine">Принять лекарство!</string>
+    <string name="warning_text">Внимание! Таблеток в контейнере мало!</string>
+    <string name="warning">warning</string>
+    <string name="zero_error">Таблекток недостаточно</string>
 </resources>

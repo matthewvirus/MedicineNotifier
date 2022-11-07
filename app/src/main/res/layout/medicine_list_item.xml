@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="20dp"
+    android:layout_marginTop="12dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginBottom="8dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/CardViewItemStyle">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_view_main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/medicine_item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medicine_name"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <ImageView
+            android:id="@+id/medicine_active_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="4dp"
+            android:scaleX="1.4"
+            android:scaleY="1.4"
+            android:contentDescription="@string/notifications_active" />
+
+        <TextView
+            android:id="@+id/medicines_times"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medicine_times"
+            android:textSize="16sp"
+            android:paddingBottom="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_name"/>
+
+        <TextView
+            android:id="@+id/medicine_item_number_in_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/medicine_num_in_container"
+            android:textSize="16sp"
+            android:paddingBottom="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicines_times"/>
+
+        <ImageView
+            android:id="@+id/warning_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_number_in_container"
+            android:src="@drawable/ic_warning"
+            android:contentDescription="@string/warning"
+            app:tint="@color/yellow_warn" />
+
+        <TextView
+            android:id="@+id/warning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/warning_text"
+            android:textColor="@color/black"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:visibility="gone"
+            app:layout_constraintStart_toEndOf="@id/warning_image"
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_number_in_container"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
