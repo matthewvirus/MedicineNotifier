@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class MedicineDataModel(
+data class Medicine(
 
     @PrimaryKey(autoGenerate = true)
     var medicineId: Int = 0,
@@ -16,5 +16,6 @@ data class MedicineDataModel(
     var medicineUseTimesPerDay: String = "",
     var medicineUseTimesPerDayInt: Int = 0,
     var medicineStatus: Int = 0,
-    var medicineTakingFirstTime: Date = Date()
+    var medicineTakingFirstTime: Date = Date(),
+    var cellNumber: Int = 0
 )

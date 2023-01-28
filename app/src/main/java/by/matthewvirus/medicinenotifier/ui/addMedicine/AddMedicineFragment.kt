@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,9 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import by.matthewvirus.medicinenotifier.R
-import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
+import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
 import by.matthewvirus.medicinenotifier.receivers.AlarmReceiver
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
@@ -45,6 +47,7 @@ class AddMedicineFragment :
     private var delayTimeInMillis: Long = 0
     private var notificationCode = 0
 
+    @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,6 +73,7 @@ class AddMedicineFragment :
         hideBottomNavigationView(false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun applyForAllElements() {
         bindingAddPatientFragment.firstNotificationTime.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         setFirstTime(Date())
@@ -156,8 +160,8 @@ class AddMedicineFragment :
         }
     }
 
-    private fun getCreatedMedicine(): MedicineDataModel {
-        val medicine = MedicineDataModel()
+    private fun getCreatedMedicine(): Medicine {
+        val medicine = Medicine()
         medicine.medicineId
         medicine.medicineName = bindingAddPatientFragment.medicineNameInput.text.toString()
         medicine.medicineNumberInContainer = bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
@@ -170,6 +174,7 @@ class AddMedicineFragment :
         return medicine
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun createNotification() {
         bindingAddPatientFragment.createMedicineNotificationButton.setOnClickListener {
             if (isValid()) {
@@ -180,12 +185,13 @@ class AddMedicineFragment :
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun startAlarm(context: Context?) {
         val intent = Intent(context, AlarmReceiver::class.java)
         val medicineName = getCreatedMedicine().medicineName
         intent.putExtra("id", medicineName)
         alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
-        pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, medicineTime.time, delayTimeInMillis, pendingIntent)
     }
 

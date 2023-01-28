@@ -4,18 +4,20 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.annotation.RequiresApi
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import by.matthewvirus.medicinenotifier.R
-import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
+import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import by.matthewvirus.medicinenotifier.databinding.AboutMedicineFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.util.HOUR_IN_MILLIS
@@ -30,7 +32,7 @@ class AboutMedicineFragment :
     private var index: Int? = 0
     private lateinit var bindingAboutMedicineFragment: AboutMedicineFragmentBinding
     private lateinit var spinner: Spinner
-    private var medicine = MedicineDataModel()
+    private var medicine = Medicine()
     private var delayTimeInMillis: Long = 0
     private var userTimesPerDayChoice = ""
     private var userTimesPerDayChoiceInt = 0
@@ -86,6 +88,7 @@ class AboutMedicineFragment :
                 menuInflater.inflate(R.menu.edit_menu, menu)
             }
 
+            @RequiresApi(Build.VERSION_CODES.S)
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_pause -> {
@@ -107,7 +110,7 @@ class AboutMedicineFragment :
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun updateUI(medicine: MedicineDataModel) {
+    private fun updateUI(medicine: Medicine) {
         bindingAboutMedicineFragment.medicineNameInput.setText(medicine.medicineName)
         bindingAboutMedicineFragment.medicineNumberInContainerInput.setText(medicine.medicineNumberInContainer.toString())
         bindingAboutMedicineFragment.medicineCriticalNumberInput.setText(medicine.medicineMinNumberRemind.toString())
@@ -153,7 +156,7 @@ class AboutMedicineFragment :
         bindingAboutMedicineFragment = AboutMedicineFragmentBinding.inflate(inflater, container, false)
     }
 
-    private fun createMedicineToUpdate(): MedicineDataModel {
+    private fun createMedicineToUpdate(): Medicine {
         medicine.medicineName = bindingAboutMedicineFragment.medicineNameInput.text.toString()
         medicine.medicineNumberInContainer = bindingAboutMedicineFragment.medicineNumberInContainerInput.text.toString().toInt()
         medicine.medicineMinNumberRemind = bindingAboutMedicineFragment.medicineCriticalNumberInput.text.toString().toInt()
@@ -195,6 +198,7 @@ class AboutMedicineFragment :
         returnToHomeActivity()
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun pauseNotification() {
         val medicineToUpdate = createMedicineToUpdate()
         if (medicineToUpdate.medicineStatus == 0) {
@@ -208,6 +212,7 @@ class AboutMedicineFragment :
         returnToHomeActivity()
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun continueNotification() {
         val medicineToUpdate = createMedicineToUpdate()
         if (medicineToUpdate.medicineStatus == 1) {
@@ -221,10 +226,11 @@ class AboutMedicineFragment :
         returnToHomeActivity()
     }
 
+    @RequiresApi(Build.VERSION_CODES.S)
     private fun cancelPendingIntent() {
         val intent = Intent(context, AboutMedicineFragment::class.java)
         alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        pendingIntent = PendingIntent.getService(context, index!!, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        pendingIntent = PendingIntent.getService(context, index!!, intent, PendingIntent.FLAG_IMMUTABLE)
         pendingIntent.cancel()
     }
 

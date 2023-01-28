@@ -66,8 +66,7 @@ class HomeActivity :
     fun hideBottomNavigationView(flag: Boolean) {
         bottomNavigationView.visibility = when(flag) {
             true -> View.GONE
-//            false -> View.VISIBLE
-            false -> View.GONE // Here I gonna implement many functions but it isn't for course project
+            false -> View.VISIBLE
         }
     }
 }

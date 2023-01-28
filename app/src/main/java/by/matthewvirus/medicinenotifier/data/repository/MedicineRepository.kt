@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import by.matthewvirus.medicinenotifier.data.database.MedicineNotifierDatabase
-import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
+import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import by.matthewvirus.medicinenotifier.util.DATABASE_NAME
 import java.util.concurrent.Executors
 
@@ -19,18 +19,18 @@ class MedicineRepository private constructor(context: Context) {
     private val medicineDao = database.medicineDao()
     private val executor = Executors.newSingleThreadExecutor()
 
-    fun getMedicines(): LiveData<List<MedicineDataModel>> = medicineDao.getMedicines()
-    fun deleteMedicine(medicine: MedicineDataModel) {
+    fun getMedicines(): LiveData<List<Medicine>> = medicineDao.getMedicines()
+    fun deleteMedicine(medicine: Medicine) {
         executor.execute {
             medicineDao.deleteMedicine(medicine)
         }
     }
-    fun updateMedicine(medicine: MedicineDataModel) {
+    fun updateMedicine(medicine: Medicine) {
         executor.execute {
             medicineDao.updateMedicine(medicine)
         }
     }
-    fun addMedicine(medicine: MedicineDataModel) {
+    fun addMedicine(medicine: Medicine) {
         executor.execute {
             medicineDao.addMedicine(medicine)
         }

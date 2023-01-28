@@ -11,23 +11,23 @@ import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import by.matthewvirus.medicinenotifier.R
-import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
+import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import java.text.SimpleDateFormat
 
 class MedicineAdapter(
-    private var medicines: List<MedicineDataModel>,
+    private var medicines: List<Medicine>,
     private val listener: OnItemClickListener
 ) : RecyclerView.Adapter<MedicineAdapter.MedicineHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(medicine: MedicineDataModel, position: Int)
+        fun onItemClick(medicine: Medicine, position: Int)
     }
 
     class MedicineHolder(
         view: View
     ) : RecyclerView.ViewHolder(view) {
 
-        private lateinit var medicine: MedicineDataModel
+        private lateinit var medicine: Medicine
         private val medicineNameTitle: TextView = itemView.findViewById(R.id.medicine_item_name)
         private val medicineTakingTime: TextView = itemView.findViewById(R.id.medicines_times)
         private val medicineNumberInContainerTitle: TextView = itemView.findViewById(R.id.medicine_item_number_in_container)
@@ -36,7 +36,7 @@ class MedicineAdapter(
         private val medicineWarningTextView: TextView = itemView.findViewById(R.id.warning_text)
 
         @SuppressLint("SetTextI18n", "SimpleDateFormat")
-        fun bind(medicine: MedicineDataModel) {
+        fun bind(medicine: Medicine) {
             this.medicine = medicine
             medicineNameTitle.text = this.medicine.medicineName
             medicineTakingTime.text = this.medicine.medicineUseTimesPerDay + itemView.context.getString(R.string.first_notification) + SimpleDateFormat(TIME_FORMAT).format(this.medicine.medicineTakingFirstTime)

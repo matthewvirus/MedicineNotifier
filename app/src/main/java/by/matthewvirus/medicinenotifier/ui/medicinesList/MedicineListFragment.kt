@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.matthewvirus.medicinenotifier.data.datamodel.MedicineDataModel
+import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.aboutMedicine.AboutMedicineFragment
 import by.matthewvirus.medicinenotifier.ui.activities.Communicator
@@ -65,7 +65,7 @@ class MedicineListFragment :
         }
     }
 
-    private fun updateUI(medicines: List<MedicineDataModel>) {
+    private fun updateUI(medicines: List<Medicine>) {
         medicineAdapter = MedicineAdapter(medicines, this)
         bindingMedicineListFragment.medicineRecyclerView.adapter = medicineAdapter
         updateViewWhenRecyclerViewIsNotEmpty(bindingMedicineListFragment.emptyView, bindingMedicineListFragment.emptyDraw)
@@ -108,7 +108,7 @@ class MedicineListFragment :
         communicator = requireActivity() as Communicator
     }
 
-    override fun onItemClick(medicine: MedicineDataModel, position: Int) {
+    override fun onItemClick(medicine: Medicine, position: Int) {
         val fragment = AboutMedicineFragment()
         fragment.arguments = communicator.passArgumentsBetweenFragments(position)
         callbacks?.onFragmentTransition(fragment)
