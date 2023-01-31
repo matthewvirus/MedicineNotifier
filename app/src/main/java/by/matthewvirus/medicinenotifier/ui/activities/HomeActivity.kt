@@ -33,13 +33,10 @@ class HomeActivity :
         super.onCreate(savedInstanceState)
         homeBinding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(homeBinding.root)
-
         bottomNavigationView = homeBinding.bottomNavigationView
-        bottomNavigationView.visibility = View.GONE
-
+        bottomNavigationView.visibility = View.VISIBLE
         navHostFragment = supportFragmentManager
             .findFragmentById(R.id.activity_main_nav_host_fragment) as NavHostFragment
-
         navController = navHostFragment.navController
         setupWithNavController(homeBinding.bottomNavigationView, navController)
     }
