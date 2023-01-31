@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Context.ALARM_SERVICE
 import android.content.Intent
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -18,6 +17,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
@@ -46,6 +46,11 @@ class AddMedicineFragment :
     private var medicineTime = Date()
     private var delayTimeInMillis: Long = 0
     private var notificationCode = 0
+    private var isMedicineStoredInContainer: Boolean = false
+
+    private val addMedicineViewModel by lazy {
+        ViewModelProvider(this)[AddMedicineViewModel::class.java]
+    }
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreateView(
@@ -53,9 +58,21 @@ class AddMedicineFragment :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
+        activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
         bindingAddPatientFragment = AddMedicineFragmentBinding.inflate(inflater, container, false)
         applyForAllElements()
         hideBottomNavigationView(true)
+        bindingAddPatientFragment.isContainerUsed.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                bindingAddPatientFragment.hiddenFormForContainer.visibility = View.VISIBLE
+                isMedicineStoredInContainer = true
+            }
+            else {
+                bindingAddPatientFragment.hiddenFormForContainer.visibility = View.GONE
+                isMedicineStoredInContainer = false
+            }
+        }
+        activity?.title = "Add medicine"
         return bindingAddPatientFragment.root
     }
 
@@ -75,7 +92,6 @@ class AddMedicineFragment :
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun applyForAllElements() {
-        bindingAddPatientFragment.firstNotificationTime.paintFlags = Paint.UNDERLINE_TEXT_FLAG
         setFirstTime(Date())
         setMedicineTimesPerDayAdapter()
         selectFirstTime()
@@ -85,24 +101,32 @@ class AddMedicineFragment :
     }
 
     private fun isValid(): Boolean =
-        validateMedicineName() && validateMedicineNumberInContainer() && validateMedicineCriticalNumber() && validateMedicineDose()
+        validateMedicineName() &&
+                validateMedicineNumberInContainer() &&
+                validateMedicineCriticalNumber() &&
+                validateMedicineDose() &&
+                validateStoreCell()
 
     private fun setUpListeners() {
         bindingAddPatientFragment.medicineNameInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineNameInput))
-        bindingAddPatientFragment.medicineNumberInContainerInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineNumberInContainerInput))
-        bindingAddPatientFragment.medicineCriticalNumberInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineCriticalNumberInput))
         bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineDoseInput))
+        if (isMedicineStoredInContainer) {
+            bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(
+                bindingAddPatientFragment.medicineCellInput))
+            bindingAddPatientFragment.medicineNumberInContainerInput.addTextChangedListener(
+                TextValidation(bindingAddPatientFragment.medicineNumberInContainerInput))
+            bindingAddPatientFragment.medicineCriticalNumberInput.addTextChangedListener(
+                TextValidation(bindingAddPatientFragment.medicineCriticalNumberInput))
+        }
     }
 
     private fun updateTime() {
         setFirstTime(medicineTime)
     }
 
-    @SuppressLint("SetTextI18n", "SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat")
     private fun setFirstTime(timeToFormat: Date) {
-        bindingAddPatientFragment.firstNotificationTime.text =
-            getString(R.string.first_notification_time_question) + " " +
-                SimpleDateFormat(TIME_FORMAT).format(timeToFormat)
+        bindingAddPatientFragment.firstNotificationTime.text = SimpleDateFormat(TIME_FORMAT).format(timeToFormat)
     }
 
     private fun setMedicineTimesPerDayAdapter() {
@@ -164,13 +188,17 @@ class AddMedicineFragment :
         val medicine = Medicine()
         medicine.medicineId
         medicine.medicineName = bindingAddPatientFragment.medicineNameInput.text.toString()
-        medicine.medicineNumberInContainer = bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
-        medicine.medicineMinNumberRemind = bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
         medicine.medicineDose = bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = userTimesPerDayChoice
         medicine.medicineUseTimesPerDayInt = userTimesPerDayChoiceInt
         medicine.medicineTakingFirstTime = medicineTime
         medicine.medicineStatus = 1
+        medicine.isStoredInContainer = isMedicineStoredInContainer
+        if (isMedicineStoredInContainer) {
+            medicine.medicineNumberInContainer = bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().toInt()
+            medicine.medicineMinNumberRemind = bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().toInt()
+            medicine.cellNumber = bindingAddPatientFragment.medicineCellInput.text.toString().toInt()
+        }
         return medicine
     }
 
@@ -178,7 +206,7 @@ class AddMedicineFragment :
     private fun createNotification() {
         bindingAddPatientFragment.createMedicineNotificationButton.setOnClickListener {
             if (isValid()) {
-                AddMedicineViewModel().addMedicine(getCreatedMedicine())
+                addMedicineViewModel.addMedicine(getCreatedMedicine())
                 activity?.supportFragmentManager?.popBackStack()
                 startAlarm(context)
             }
@@ -206,28 +234,6 @@ class AddMedicineFragment :
         return true
     }
 
-    private fun validateMedicineNumberInContainer(): Boolean {
-        if (bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().trim().isEmpty()) {
-            bindingAddPatientFragment.medicineNumberInContainerLayout.error = getString(R.string.items_error)
-            bindingAddPatientFragment.medicineNumberInContainerInput.requestFocus()
-            return false
-        } else {
-            bindingAddPatientFragment.medicineNumberInContainerLayout.isErrorEnabled = false
-        }
-        return true
-    }
-
-    private fun validateMedicineCriticalNumber(): Boolean {
-        if (bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().trim().isEmpty()) {
-            bindingAddPatientFragment.medicineCriticalNumberLayout.error = getString(R.string.critical_error)
-            bindingAddPatientFragment.medicineCriticalNumberInput.requestFocus()
-            return false
-        } else {
-            bindingAddPatientFragment.medicineCriticalNumberLayout.isErrorEnabled = false
-        }
-        return true
-    }
-
     private fun validateMedicineDose(): Boolean {
         if (bindingAddPatientFragment.medicineDoseInput.text.toString().trim().isEmpty()) {
             bindingAddPatientFragment.medicineDoseLayout.error = getString(R.string.dose_error)
@@ -239,11 +245,59 @@ class AddMedicineFragment :
         return true
     }
 
+    private fun validateMedicineNumberInContainer(): Boolean {
+        if (bindingAddPatientFragment.medicineNumberInContainerInput.text.toString().trim().isEmpty() && isMedicineStoredInContainer) {
+            bindingAddPatientFragment.medicineNumberInContainerLayout.error = getString(R.string.items_error)
+            bindingAddPatientFragment.medicineNumberInContainerInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineNumberInContainerLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateMedicineCriticalNumber(): Boolean {
+        if (bindingAddPatientFragment.medicineCriticalNumberInput.text.toString().trim().isEmpty() && isMedicineStoredInContainer) {
+            bindingAddPatientFragment.medicineCriticalNumberLayout.error = getString(R.string.critical_error)
+            bindingAddPatientFragment.medicineCriticalNumberInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineCriticalNumberLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun validateStoreCell(): Boolean {
+        val medicineCellText = bindingAddPatientFragment.medicineCellInput.text.toString()
+        if ((medicineCellText.trim().isEmpty() || isCellContainsMedicine(medicineCellText) || (medicineCellText.toInt() > 7 || medicineCellText.toInt() < 1)) && isMedicineStoredInContainer) {
+            bindingAddPatientFragment.medicineCellLayout.error =
+                getString(R.string.cell_error)
+            bindingAddPatientFragment.medicineCellInput.requestFocus()
+            return false
+        } else {
+            bindingAddPatientFragment.medicineCellLayout.isErrorEnabled = false
+        }
+        return true
+    }
+
+    private fun isCellContainsMedicine(medicineCellText: String): Boolean {
+        val medicines = addMedicineViewModel.getMedicines().value
+        if (medicines != null) {
+            for (medicine in medicines) {
+                if (medicine.cellNumber == medicineCellText.toInt()) {
+                    return true
+                } else {
+                    continue
+                }
+            }
+        }
+        return false
+    }
+
     private fun createNotificationCode() {
-        AddMedicineViewModel().getMedicines().observe(
+        addMedicineViewModel.getMedicines().observe(
             viewLifecycleOwner
-        ) {
-            medicines ->
+        ) { medicines ->
             medicines.let {
                 notificationCode = medicines.size
             }
@@ -267,6 +321,9 @@ class AddMedicineFragment :
                 }
                 R.id.medicine_dose_input -> {
                     validateMedicineDose()
+                }
+                R.id.medicine_cell_input -> {
+                    validateStoreCell()
                 }
             }
         }
