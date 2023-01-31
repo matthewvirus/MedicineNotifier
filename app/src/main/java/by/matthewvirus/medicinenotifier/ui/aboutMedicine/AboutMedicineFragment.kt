@@ -19,10 +19,12 @@ import androidx.lifecycle.ViewModelProvider
 import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
 import by.matthewvirus.medicinenotifier.databinding.AboutMedicineFragmentBinding
+import by.matthewvirus.medicinenotifier.receivers.AlarmReceiver
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.util.HOUR_IN_MILLIS
 import by.matthewvirus.medicinenotifier.util.INDEX_ARGUMENT
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 class AboutMedicineFragment :
     Fragment(),
@@ -36,6 +38,7 @@ class AboutMedicineFragment :
     private var delayTimeInMillis: Long = 0
     private var userTimesPerDayChoice = ""
     private var userTimesPerDayChoiceInt = 0
+    private var notificationCode = 0
     private lateinit var alarmManager: AlarmManager
     private lateinit var pendingIntent: PendingIntent
 
@@ -55,6 +58,8 @@ class AboutMedicineFragment :
         setMedicineTimesPerDayAdapter()
         setUpUpdateMedicineButton()
         setUpTakeMedicineButton()
+        createNotificationCode()
+        activity?.title = "Change or take medicine"
         return bindingAboutMedicineFragment.root
     }
 
@@ -115,6 +120,10 @@ class AboutMedicineFragment :
         bindingAboutMedicineFragment.medicineNumberInContainerInput.setText(medicine.medicineNumberInContainer.toString())
         bindingAboutMedicineFragment.medicineCriticalNumberInput.setText(medicine.medicineMinNumberRemind.toString())
         bindingAboutMedicineFragment.medicineDoseInput.setText(medicine.medicineDose.toString())
+        if (medicine.isStoredInContainer) {
+            bindingAboutMedicineFragment.containerFormConstraint.visibility = View.VISIBLE
+            print(medicine.isStoredInContainer)
+        }
         setUpTheSpinner()
     }
 
@@ -169,7 +178,7 @@ class AboutMedicineFragment :
     private fun setUpUpdateMedicineButton() {
         bindingAboutMedicineFragment.updateMedicineNotificationButton.apply {
             setOnClickListener {
-                AboutMedicineViewModel().updateMedicine(createMedicineToUpdate())
+                aboutMedicineViewModel.updateMedicine(createMedicineToUpdate())
                 returnToHomeActivity()
             }
         }
@@ -186,14 +195,14 @@ class AboutMedicineFragment :
                     medicine.medicineNumberInContainer = 0
                     createSnackBar(R.string.zero_error)
                 }
-                AboutMedicineViewModel().updateMedicine(medicine)
+                aboutMedicineViewModel.updateMedicine(medicine)
                 returnToHomeActivity()
             }
         }
     }
 
     private fun deleteMedicine() {
-        AboutMedicineViewModel().deleteMedicine(medicine)
+        aboutMedicineViewModel.deleteMedicine(medicine)
         Snackbar.make(requireView(), R.string.item_deleted, Snackbar.LENGTH_SHORT).show()
         returnToHomeActivity()
     }
@@ -206,7 +215,7 @@ class AboutMedicineFragment :
             return
         }
         medicineToUpdate.medicineStatus = 0
-        AboutMedicineViewModel().updateMedicine(medicineToUpdate)
+        aboutMedicineViewModel.updateMedicine(medicineToUpdate)
         cancelPendingIntent()
         createSnackBar(R.string.item_paused)
         returnToHomeActivity()
@@ -220,8 +229,8 @@ class AboutMedicineFragment :
             return
         }
         medicineToUpdate.medicineStatus = 1
-        AboutMedicineViewModel().updateMedicine(medicineToUpdate)
-        cancelPendingIntent()
+        aboutMedicineViewModel.updateMedicine(medicineToUpdate)
+        startAlarm(context)
         createSnackBar(R.string.notifications_active)
         returnToHomeActivity()
     }
@@ -249,5 +258,25 @@ class AboutMedicineFragment :
     private fun setUpTheSpinner() {
         spinner = bindingAboutMedicineFragment.medicineTimesPerDaySpinner
         spinner.setSelection(medicine.medicineUseTimesPerDayInt)
+    }
+
+    private fun createNotificationCode() {
+        aboutMedicineViewModel.getMedicines().observe(
+            viewLifecycleOwner
+        ) { medicines ->
+            medicines.let {
+                notificationCode = medicines.size
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun startAlarm(context: Context?) {
+        val intent = Intent(context, AlarmReceiver::class.java)
+        val medicineName = medicine.medicineName
+        intent.putExtra("id", medicineName)
+        alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE)
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, medicine.medicineTakingFirstTime.time, delayTimeInMillis, pendingIntent)
     }
 }
