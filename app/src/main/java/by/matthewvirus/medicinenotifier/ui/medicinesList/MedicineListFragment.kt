@@ -46,6 +46,7 @@ class MedicineListFragment :
         setUpBinding(inflater, container)
         applyForAllElements()
         setUpCommunicator()
+        activity?.title = "Treatment"
         return bindingMedicineListFragment.root
     }
 
@@ -56,7 +57,7 @@ class MedicineListFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        medicinesListViewModel.medicinesLiveData.observe(
+        medicinesListViewModel.getMedicines().observe(
             viewLifecycleOwner
         ) { medicines ->
             medicines?.let {

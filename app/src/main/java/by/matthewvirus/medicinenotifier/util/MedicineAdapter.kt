@@ -40,7 +40,6 @@ class MedicineAdapter(
             this.medicine = medicine
             medicineNameTitle.text = this.medicine.medicineName
             medicineTakingTime.text = this.medicine.medicineUseTimesPerDay + itemView.context.getString(R.string.first_notification) + SimpleDateFormat(TIME_FORMAT).format(this.medicine.medicineTakingFirstTime)
-            medicineNumberInContainerTitle.text = itemView.context.getString(R.string.medicines_left) + " " + this.medicine.medicineNumberInContainer.toString()
             when (medicine.medicineStatus) {
                 0 -> {
                     medicineStatusImageView.setImageResource(R.drawable.ic_notif_off)
@@ -49,10 +48,13 @@ class MedicineAdapter(
                 else -> {
                     medicineStatusImageView.setImageResource(R.drawable.ic_notif_on)
                     ImageViewCompat.setImageTintList(medicineStatusImageView, ColorStateList.valueOf(Color.parseColor("#8bc34a")))
-
                 }
             }
-            if (medicine.medicineNumberInContainer <= medicine.medicineMinNumberRemind) {
+            medicineNumberInContainerTitle.text = itemView.context.getString(R.string.medicines_left) + " " + this.medicine.medicineNumberInContainer.toString()
+            if (!medicine.isStoredInContainer) {
+                medicineNumberInContainerTitle.visibility = View.GONE
+            }
+            if (medicine.medicineNumberInContainer <= medicine.medicineMinNumberRemind && medicine.isStoredInContainer) {
                 medicineWarningImageView.visibility = View.VISIBLE
                 medicineWarningTextView.visibility = View.VISIBLE
             } else {
