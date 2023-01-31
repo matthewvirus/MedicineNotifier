@@ -1,54 +1,20 @@
 package by.matthewvirus.medicinenotifier.data.repository
 
-import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.room.Room
-import by.matthewvirus.medicinenotifier.data.database.MedicineNotifierDatabase
+import by.matthewvirus.medicinenotifier.data.database.dao.MedicineDao
 import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
-import by.matthewvirus.medicinenotifier.util.DATABASE_NAME
-import java.util.concurrent.Executors
 
-class MedicineRepository private constructor(context: Context) {
+class MedicineRepository (private val medicineDao: MedicineDao) {
 
-    private val database: MedicineNotifierDatabase = Room.databaseBuilder(
-        context.applicationContext,
-        MedicineNotifierDatabase::class.java,
-        DATABASE_NAME
-    ).build()
+    fun getMedicines(): LiveData<List<Medicine>> =
+        medicineDao.getMedicines()
 
-    private val medicineDao = database.medicineDao()
-    private val executor = Executors.newSingleThreadExecutor()
+    fun deleteMedicine(medicine: Medicine) =
+        medicineDao.deleteMedicine(medicine)
 
-    fun getMedicines(): LiveData<List<Medicine>> = medicineDao.getMedicines()
-    fun deleteMedicine(medicine: Medicine) {
-        executor.execute {
-            medicineDao.deleteMedicine(medicine)
-        }
-    }
-    fun updateMedicine(medicine: Medicine) {
-        executor.execute {
-            medicineDao.updateMedicine(medicine)
-        }
-    }
-    fun addMedicine(medicine: Medicine) {
-        executor.execute {
-            medicineDao.addMedicine(medicine)
-        }
-    }
+    fun updateMedicine(medicine: Medicine) =
+        medicineDao.updateMedicine(medicine)
 
-    companion object {
-
-        private var INSTANCE: MedicineRepository? = null
-
-        fun initialize(context: Context) {
-            if (INSTANCE == null) {
-                INSTANCE = MedicineRepository(context)
-            }
-        }
-
-        fun get(): MedicineRepository {
-            return INSTANCE ?:
-                throw IllegalStateException("Medicine repository must be initialized!")
-        }
-    }
+    fun addMedicine(medicine: Medicine) =
+        medicineDao.addMedicine(medicine)
 }
