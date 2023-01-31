@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import by.matthewvirus.medicinenotifier.util.ARG_TIME
 import java.util.*
 
+@Suppress("DEPRECATION")
 class TimePickerFragment: DialogFragment() {
 
     interface Callbacks {
