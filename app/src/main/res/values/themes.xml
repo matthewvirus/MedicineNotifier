@@ -1,16 +1,21 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Theme.MedicineNotifier" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
+    <style name="Theme.MedicineNotifier" parent="Theme.Material3.DayNight">
+        <item name="android:statusBarColor">@color/light_blue_primary</item>
         <item name="colorPrimary">@color/light_blue_primary</item>
-        <item name="colorPrimaryVariant">@color/light_blue_primary_d</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/light_blue_primary</item>
-        <item name="colorSecondaryVariant">@color/light_blue_primary_d</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorPrimaryContainer">@color/light_blue_primary_l</item>
+        <item name="colorSurfaceVariant">@color/white</item>
+        <item name="android:fontFamily">@font/raleway_medium</item>
+    </style>
+
+    <style name="Widget.MedicineNotifier.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MedicineNotifier.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.MedicineNotifier.BottomNavigationView" parent="">
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/light_blue_primary</item>
+        <item name="colorSecondaryContainer">@color/light_blue_primary_l</item>
     </style>
 </resources>

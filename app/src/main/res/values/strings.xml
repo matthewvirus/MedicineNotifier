@@ -13,6 +13,7 @@
     <string name="medicines_left">Осталось таблеток: </string>
 
     <!--Strings for add_medicine_fragment.xml-->
+    <string name="medicine_form_info">Настройка уведомлений</string>
     <string name="medicine_name_question">Название лекарства</string>
     <string name="number_of_medicines_in_container_question">Таблеток в контейнере</string>
     <string name="medicine_critical_number_question">Пороговое значение таблеток</string>
@@ -30,8 +31,11 @@
     <string name="take_medicine_button">Принять</string>
     <string name="delete_medicine_button">Удалить</string>
     <string name="treatment">Лечение</string>
-    <string name="notifications">Уведомления</string>
-    <string name="personal_status">Самочувствие</string>
+    <string name="stats">Статистика</string>
+    <string name="connection">Связь</string>
+    <string name="settings">Настройки</string>
+    <string name="container_form_info">Настройка контейнера</string>
+    <string name="cell_question">Ячейка</string>
 
     <!--Strings for spinner-->
     <string-array name="times_per_day">
@@ -41,11 +45,22 @@
         <item>Четыре раза в день</item>
     </string-array>
 
+    <string-array name="cell_array">
+        <item>Ячейка 1</item>
+        <item>Ячейка 2</item>
+        <item>Ячейка 3</item>
+        <item>Ячейка 4</item>
+        <item>Ячейка 5</item>
+        <item>Ячейка 6</item>
+        <item>Ячейка 7</item>
+    </string-array>
+
     <!--Errors-->
     <string name="name_error">Введите имя лекарства!</string>
     <string name="items_error">Введите количество таблеток в контейнере!</string>
     <string name="critical_error">Введите пороговое значение таблеток!</string>
     <string name="dose_error">Введите дозировку!</string>
+    <string name="cell_error">Выберите ячейку!</string>
 
     <string name="empty">Нет доступных курсов лечения.</string>
 
@@ -63,4 +78,6 @@
     <string name="warning_text">Внимание! Таблеток в контейнере мало!</string>
     <string name="warning">warning</string>
     <string name="zero_error">Таблекток недостаточно</string>
+    <string name="container_question">Использовать контейнер?</string>
+    <string name="add_fab">Добавить</string>
 </resources>
