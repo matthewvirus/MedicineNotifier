@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class Medicine(
+data class Medicine (
 
     @PrimaryKey(autoGenerate = true)
     var medicineId: Int = 0,
@@ -17,5 +17,6 @@ data class Medicine(
     var medicineUseTimesPerDayInt: Int = 0,
     var medicineStatus: Int = 0,
     var medicineTakingFirstTime: Date = Date(),
+    var isStoredInContainer: Boolean = false,
     var cellNumber: Int = 0
 )
