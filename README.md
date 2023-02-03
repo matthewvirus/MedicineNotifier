@@ -1,5 +1,7 @@
 # Medicine Notifier
 
+<img src="app/src/main/ic_launcher-playstore.png" width="50px" height="50px" alt="App icon"> 
+
 ### My diploma project
 
 #### Prelude
