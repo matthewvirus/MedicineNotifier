@@ -176,6 +176,7 @@
         android:textColor="@color/white"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
+        android:clickable="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/update_medicine_notification_button"/>
 
