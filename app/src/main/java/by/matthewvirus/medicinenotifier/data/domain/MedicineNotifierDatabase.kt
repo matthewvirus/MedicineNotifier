@@ -1,18 +1,16 @@
-package by.matthewvirus.medicinenotifier.data.database
+package by.matthewvirus.medicinenotifier.data.domain
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import by.matthewvirus.medicinenotifier.data.database.dao.MedicineDao
-import by.matthewvirus.medicinenotifier.data.database.dataconverters.MedicineTypeConverters
-import by.matthewvirus.medicinenotifier.data.datamodel.Doctor
-import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
-import by.matthewvirus.medicinenotifier.data.datamodel.Patient
+import by.matthewvirus.medicinenotifier.data.domain.dao.MedicineDao
+import by.matthewvirus.medicinenotifier.data.domain.dataconverters.MedicineTypeConverters
+import by.matthewvirus.medicinenotifier.data.model.Medicine
 import by.matthewvirus.medicinenotifier.util.DATABASE_NAME
 
-@Database(entities = [Medicine::class, Patient::class, Doctor::class], version = 1)
+@Database(entities = [Medicine::class], version = 1)
 @TypeConverters(MedicineTypeConverters::class)
 abstract class MedicineNotifierDatabase : RoomDatabase() {
 
@@ -38,6 +36,5 @@ abstract class MedicineNotifierDatabase : RoomDatabase() {
                 return instance
             }
         }
-
     }
 }

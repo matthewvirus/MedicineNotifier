@@ -75,6 +75,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/first_notification_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -216,7 +217,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/create_medicine_notification_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

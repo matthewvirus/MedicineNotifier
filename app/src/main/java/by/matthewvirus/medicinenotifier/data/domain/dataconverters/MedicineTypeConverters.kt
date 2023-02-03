@@ -1,4 +1,4 @@
-package by.matthewvirus.medicinenotifier.data.database.dataconverters
+package by.matthewvirus.medicinenotifier.data.domain.dataconverters
 
 import androidx.room.TypeConverter
 import java.util.*

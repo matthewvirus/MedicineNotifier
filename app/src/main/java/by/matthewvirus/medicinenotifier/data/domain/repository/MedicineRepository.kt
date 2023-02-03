@@ -1,8 +1,8 @@
-package by.matthewvirus.medicinenotifier.data.repository
+package by.matthewvirus.medicinenotifier.data.domain.repository
 
 import androidx.lifecycle.LiveData
-import by.matthewvirus.medicinenotifier.data.database.dao.MedicineDao
-import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
+import by.matthewvirus.medicinenotifier.data.domain.dao.MedicineDao
+import by.matthewvirus.medicinenotifier.data.model.Medicine
 
 class MedicineRepository (private val medicineDao: MedicineDao) {
 

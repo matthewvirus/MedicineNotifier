@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.widget.ImageViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import by.matthewvirus.medicinenotifier.R
-import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
+import by.matthewvirus.medicinenotifier.data.model.Medicine
 import java.text.SimpleDateFormat
 
 class MedicineAdapter(

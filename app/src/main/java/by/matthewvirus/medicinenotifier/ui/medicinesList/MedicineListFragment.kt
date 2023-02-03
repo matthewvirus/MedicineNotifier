@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
+import by.matthewvirus.medicinenotifier.data.model.Medicine
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.aboutMedicine.AboutMedicineFragment
 import by.matthewvirus.medicinenotifier.ui.activities.Communicator
