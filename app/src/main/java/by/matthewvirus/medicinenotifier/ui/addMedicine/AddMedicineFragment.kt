@@ -1,11 +1,6 @@
 package by.matthewvirus.medicinenotifier.ui.addMedicine
 
 import android.annotation.SuppressLint
-import android.app.AlarmManager
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
@@ -13,20 +8,20 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.matthewvirus.medicinenotifier.R
-import by.matthewvirus.medicinenotifier.data.datamodel.Medicine
+import by.matthewvirus.medicinenotifier.data.model.Medicine
 import by.matthewvirus.medicinenotifier.databinding.AddMedicineFragmentBinding
-import by.matthewvirus.medicinenotifier.receivers.AlarmReceiver
 import by.matthewvirus.medicinenotifier.ui.activities.HomeActivity
 import by.matthewvirus.medicinenotifier.ui.dialogs.TimePickerFragment
+import by.matthewvirus.medicinenotifier.util.AlarmUtils.Companion.createNotificationCode
+import by.matthewvirus.medicinenotifier.util.AlarmUtils.Companion.startAlarm
 import by.matthewvirus.medicinenotifier.util.DIALOG_TIME
-import by.matthewvirus.medicinenotifier.util.HOUR_IN_MILLIS
 import by.matthewvirus.medicinenotifier.util.REQUEST_TIME
+import by.matthewvirus.medicinenotifier.util.SpinnerUtils.Companion.selectSpinnerItem
 import by.matthewvirus.medicinenotifier.util.TIME_FORMAT
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,12 +34,7 @@ class AddMedicineFragment :
 {
 
     private lateinit var bindingAddPatientFragment: AddMedicineFragmentBinding
-    private lateinit var alarmManager: AlarmManager
-    private lateinit var pendingIntent: PendingIntent
-    private var userTimesPerDayChoice = ""
-    private var userTimesPerDayChoiceInt = 0
     private var medicineTime = Date()
-    private var delayTimeInMillis: Long = 0
     private var notificationCode = 0
     private var isMedicineStoredInContainer: Boolean = false
 
@@ -97,27 +87,10 @@ class AddMedicineFragment :
         selectFirstTime()
         createNotification()
         setUpListeners()
-        createNotificationCode()
-    }
-
-    private fun isValid(): Boolean =
-        validateMedicineName() &&
-                validateMedicineNumberInContainer() &&
-                validateMedicineCriticalNumber() &&
-                validateMedicineDose() &&
-                validateStoreCell()
-
-    private fun setUpListeners() {
-        bindingAddPatientFragment.medicineNameInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineNameInput))
-        bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineDoseInput))
-        if (isMedicineStoredInContainer) {
-            bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(
-                bindingAddPatientFragment.medicineCellInput))
-            bindingAddPatientFragment.medicineNumberInContainerInput.addTextChangedListener(
-                TextValidation(bindingAddPatientFragment.medicineNumberInContainerInput))
-            bindingAddPatientFragment.medicineCriticalNumberInput.addTextChangedListener(
-                TextValidation(bindingAddPatientFragment.medicineCriticalNumberInput))
-        }
+        notificationCode = createNotificationCode(
+            addMedicineViewModel.getMedicines(),
+            viewLifecycleOwner
+        )
     }
 
     private fun updateTime() {
@@ -137,37 +110,7 @@ class AddMedicineFragment :
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             bindingAddPatientFragment.medicineTimesPerDaySpinner.adapter = adapter
-            selectSpinnerItem()
-        }
-    }
-
-    private fun selectSpinnerItem() {
-        bindingAddPatientFragment.medicineTimesPerDaySpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener {
-
-            override fun onNothingSelected(parent: AdapterView<*>?) { }
-
-            override fun onItemSelected(parent: AdapterView<*>?,
-                                        view: View?,
-                                        position: Int,
-                                        id: Long) {
-                when(id) {
-                    0L -> {
-                        delayTimeInMillis = 24 * HOUR_IN_MILLIS
-                    }
-                    1L -> {
-                        delayTimeInMillis = 6 * HOUR_IN_MILLIS
-                    }
-                    2L -> {
-                        delayTimeInMillis = 4 * HOUR_IN_MILLIS
-                    }
-                    3L -> {
-                        delayTimeInMillis = 3 * HOUR_IN_MILLIS
-                    }
-                }
-                val choice = resources.getStringArray(R.array.times_per_day)
-                userTimesPerDayChoice = choice[position]
-                userTimesPerDayChoiceInt = position
-            }
+            selectSpinnerItem(bindingAddPatientFragment.medicineTimesPerDaySpinner, resources)
         }
     }
 
@@ -189,8 +132,8 @@ class AddMedicineFragment :
         medicine.medicineId
         medicine.medicineName = bindingAddPatientFragment.medicineNameInput.text.toString()
         medicine.medicineDose = bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
-        medicine.medicineUseTimesPerDay = userTimesPerDayChoice
-        medicine.medicineUseTimesPerDayInt = userTimesPerDayChoiceInt
+        medicine.medicineUseTimesPerDay = selectSpinnerItem(bindingAddPatientFragment.medicineTimesPerDaySpinner, resources).userTimesPerDayChoice
+        medicine.medicineUseTimesPerDayInt = selectSpinnerItem(bindingAddPatientFragment.medicineTimesPerDaySpinner, resources).userTimesPerDayChoiceInt
         medicine.medicineTakingFirstTime = medicineTime
         medicine.medicineStatus = 1
         medicine.isStoredInContainer = isMedicineStoredInContainer
@@ -208,19 +151,35 @@ class AddMedicineFragment :
             if (isValid()) {
                 addMedicineViewModel.addMedicine(getCreatedMedicine())
                 activity?.supportFragmentManager?.popBackStack()
-                startAlarm(context)
+                startAlarm(
+                    context,
+                    getCreatedMedicine(),
+                    notificationCode,
+                    bindingAddPatientFragment.medicineTimesPerDaySpinner,
+                    resources
+                )
             }
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.S)
-    private fun startAlarm(context: Context?) {
-        val intent = Intent(context, AlarmReceiver::class.java)
-        val medicineName = getCreatedMedicine().medicineName
-        intent.putExtra("id", medicineName)
-        alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager
-        pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE)
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, medicineTime.time, delayTimeInMillis, pendingIntent)
+    private fun isValid(): Boolean =
+        validateMedicineName() &&
+                validateMedicineNumberInContainer() &&
+                validateMedicineCriticalNumber() &&
+                validateMedicineDose() &&
+                validateStoreCell()
+
+    private fun setUpListeners() {
+        bindingAddPatientFragment.medicineNameInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineNameInput))
+        bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(bindingAddPatientFragment.medicineDoseInput))
+        if (isMedicineStoredInContainer) {
+            bindingAddPatientFragment.medicineDoseInput.addTextChangedListener(TextValidation(
+                bindingAddPatientFragment.medicineCellInput))
+            bindingAddPatientFragment.medicineNumberInContainerInput.addTextChangedListener(
+                TextValidation(bindingAddPatientFragment.medicineNumberInContainerInput))
+            bindingAddPatientFragment.medicineCriticalNumberInput.addTextChangedListener(
+                TextValidation(bindingAddPatientFragment.medicineCriticalNumberInput))
+        }
     }
 
     private fun validateMedicineName(): Boolean {
@@ -292,16 +251,6 @@ class AddMedicineFragment :
             }
         }
         return false
-    }
-
-    private fun createNotificationCode() {
-        addMedicineViewModel.getMedicines().observe(
-            viewLifecycleOwner
-        ) { medicines ->
-            medicines.let {
-                notificationCode = medicines.size
-            }
-        }
     }
 
     inner class TextValidation(private val view: View) : TextWatcher {
