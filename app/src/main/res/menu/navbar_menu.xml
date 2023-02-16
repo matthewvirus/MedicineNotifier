@@ -5,14 +5,6 @@
         android:icon="@drawable/ic_notifications"
         android:title="@string/treatment"/>
     <item
-        android:id="@+id/notifications"
-        android:icon="@drawable/ic_personal_status"
-        android:title="@string/stats"/>
-    <item
-        android:id="@+id/personal_status"
-        android:icon="@drawable/ic_treatment"
-        android:title="@string/connection"/>
-    <item
         android:id="@+id/settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/settings"/>

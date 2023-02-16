@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import by.matthewvirus.medicinenotifier.R
 import by.matthewvirus.medicinenotifier.data.model.Medicine
 import by.matthewvirus.medicinenotifier.databinding.MedicineListFragmentBinding
 import by.matthewvirus.medicinenotifier.ui.aboutMedicine.AboutMedicineFragment
@@ -46,7 +47,7 @@ class MedicineListFragment :
         setUpBinding(inflater, container)
         applyForAllElements()
         setUpCommunicator()
-        activity?.title = "Treatment"
+        activity?.title = getString(R.string.treatment)
         return bindingMedicineListFragment.root
     }
 

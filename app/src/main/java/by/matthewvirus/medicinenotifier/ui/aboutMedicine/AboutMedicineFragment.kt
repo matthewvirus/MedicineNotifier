@@ -54,7 +54,7 @@ class AboutMedicineFragment :
             aboutMedicineViewModel.getMedicines(),
             viewLifecycleOwner
         )
-        activity?.title = "Change or take medicine"
+        activity?.title = getString(R.string.change_take)
         return bindingAboutMedicineFragment.root
     }
 
@@ -66,7 +66,7 @@ class AboutMedicineFragment :
             medicines ->
             medicines?.let {
                 medicine = medicines[index!!]
-                updateUI(medicine)
+                updateUI()
             }
         }
     }
@@ -110,15 +110,15 @@ class AboutMedicineFragment :
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun updateUI(medicine: Medicine) {
+    private fun updateUI() {
         bindingAboutMedicineFragment.medicineNameInput.setText(medicine.medicineName)
         bindingAboutMedicineFragment.medicineNumberInContainerInput.setText(medicine.medicineNumberInContainer.toString())
         bindingAboutMedicineFragment.medicineCriticalNumberInput.setText(medicine.medicineMinNumberRemind.toString())
         bindingAboutMedicineFragment.medicineDoseInput.setText(medicine.medicineDose.toString())
         if (medicine.isStoredInContainer) {
             bindingAboutMedicineFragment.containerFormConstraint.visibility = View.VISIBLE
-            print(medicine.isStoredInContainer)
         }
+        bindingAboutMedicineFragment.takeMedicineButton.isClickable = medicine.currentlyTaken != (medicine.medicineDose * medicine.medicineUseTimesPerDayInt)
         bindingAboutMedicineFragment.takeMedicineButton.isClickable = medicine.medicineStatus == 1
         setUpTheSpinner()
     }
@@ -164,15 +164,15 @@ class AboutMedicineFragment :
                 if (medicine.isStoredInContainer) {
                     if (medicine.medicineNumberInContainer > 0 && medicine.medicineNumberInContainer >= medicine.medicineMinNumberRemind) {
                         medicine.medicineNumberInContainer -= medicine.medicineDose
-                        medicine.medicineStatistics = true
                     } else if (medicine.medicineNumberInContainer < medicine.medicineMinNumberRemind) {
                         createSnackBar(R.string.zero_error)
                     } else {
                         medicine.medicineNumberInContainer = 0
                         createSnackBar(R.string.zero_error)
                     }
-                    aboutMedicineViewModel.updateMedicine(medicine)
                 }
+                medicine.currentlyTaken += 1
+                aboutMedicineViewModel.updateMedicine(medicine)
                 returnToHomeActivity()
             }
         }

@@ -16,17 +16,6 @@
             android:defaultValue="1" />
     </fragment>
     <fragment
-        android:id="@+id/notifications"
-        android:name="by.matthewvirus.medicinenotifier.ui.stats.StatsFragment"
-        android:label="second_fragment"
-        tools:layout="@layout/stats_fragment"/>
-    <fragment
-        android:id="@+id/personal_status"
-        android:name="by.matthewvirus.medicinenotifier.ui.connection.ConnectionFragment"
-        android:label="second_fragment"
-        tools:layout="@layout/connection_fragment">
-    </fragment>
-    <fragment
         android:id="@+id/settings"
         android:name="by.matthewvirus.medicinenotifier.ui.settings.SettingsFragment"
         android:label="second_fragment"

@@ -56,13 +56,12 @@ class AddMedicineFragment :
             if (isChecked) {
                 bindingAddPatientFragment.hiddenFormForContainer.visibility = View.VISIBLE
                 isMedicineStoredInContainer = true
-            }
-            else {
+            } else {
                 bindingAddPatientFragment.hiddenFormForContainer.visibility = View.GONE
                 isMedicineStoredInContainer = false
             }
         }
-        activity?.title = "Add medicine"
+        activity?.title = getString(R.string.add_medicine)
         return bindingAddPatientFragment.root
     }
 
@@ -129,7 +128,6 @@ class AddMedicineFragment :
 
     private fun getCreatedMedicine(): Medicine {
         val medicine = Medicine()
-        medicine.medicineId
         medicine.medicineName = bindingAddPatientFragment.medicineNameInput.text.toString()
         medicine.medicineDose = bindingAddPatientFragment.medicineDoseInput.text.toString().toInt()
         medicine.medicineUseTimesPerDay = selectSpinnerItem(bindingAddPatientFragment.medicineTimesPerDaySpinner, resources).userTimesPerDayChoice

@@ -30,6 +30,7 @@ class MedicineAdapter(
         private lateinit var medicine: Medicine
         private val medicineNameTitle: TextView = itemView.findViewById(R.id.medicine_item_name)
         private val medicineTakingTime: TextView = itemView.findViewById(R.id.medicines_times)
+        private val currentlyTakenTextView: TextView = itemView.findViewById(R.id.currently_taken_text)
         private val medicineNumberInContainerTitle: TextView = itemView.findViewById(R.id.medicine_item_number_in_container)
         private val medicineStatusImageView: ImageView = itemView.findViewById(R.id.medicine_active_status)
         private val medicineWarningImageView: ImageView = itemView.findViewById(R.id.warning_image)
@@ -40,6 +41,11 @@ class MedicineAdapter(
             this.medicine = medicine
             medicineNameTitle.text = this.medicine.medicineName
             medicineTakingTime.text = this.medicine.medicineUseTimesPerDay + itemView.context.getString(R.string.first_notification) + SimpleDateFormat(TIME_FORMAT).format(this.medicine.medicineTakingFirstTime)
+            if (this.medicine.currentlyTaken != (this.medicine.medicineDose * this.medicine.medicineUseTimesPerDayInt) + 1) {
+                currentlyTakenTextView.text = itemView.context.getString(R.string.taken_today) + " " + this.medicine.currentlyTaken
+            } else {
+                currentlyTakenTextView.text = "На сегодня всё!"
+            }
             when (medicine.medicineStatus) {
                 0 -> {
                     medicineStatusImageView.setImageResource(R.drawable.ic_notif_off)

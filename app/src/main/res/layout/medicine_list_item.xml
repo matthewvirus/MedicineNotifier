@@ -23,10 +23,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/medicine_name"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:paddingBottom="8dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/currently_taken_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/taken_today"
+            android:textSize="20sp"
+            android:paddingBottom="4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/medicine_item_name"/>
 
         <ImageView
             android:id="@+id/medicine_active_status"
@@ -48,7 +58,7 @@
             android:textSize="16sp"
             android:paddingBottom="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/medicine_item_name"/>
+            app:layout_constraintTop_toBottomOf="@id/currently_taken_text"/>
 
         <TextView
             android:id="@+id/medicine_item_number_in_container"

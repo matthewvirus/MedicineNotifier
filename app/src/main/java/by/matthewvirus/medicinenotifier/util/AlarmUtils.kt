@@ -31,6 +31,9 @@ class AlarmUtils {
             val intent = Intent(context, AlarmReceiver::class.java)
             val medicineName = medicine.medicineName
             intent.putExtra("id", medicineName)
+            if (medicine.isStoredInContainer) {
+                intent.putExtra("cell", medicine.cellNumber)
+            }
             alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             pendingIntent = PendingIntent.getBroadcast(context, notificationCode, intent, PendingIntent.FLAG_IMMUTABLE)
             alarmManager.setInexactRepeating(
