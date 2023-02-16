@@ -6,7 +6,6 @@
         <item name="colorSurface">@color/white</item>
         <item name="colorPrimaryContainer">@color/light_blue_primary_l</item>
         <item name="colorSurfaceVariant">@color/white</item>
-        <item name="android:fontFamily">@font/raleway_medium</item>
     </style>
 
     <style name="Widget.MedicineNotifier.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
