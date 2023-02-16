@@ -3,53 +3,53 @@
     <string name="app_name">Medicine Notifier</string>
 
     <!--Strings for Smart Talk-->
-    <string name="creating_of_new_medicine">Добавление нового лекарства</string>
+    <string name="creating_of_new_medicine">Даданне новай лекі</string>
 
     <!--Strings for medicine_list_item.xml-->
-    <string name="medicine_name">Название лекарства</string>
-    <string name="medicine_times">Время принятия</string>
-    <string name="medicine_num_in_container">Осталось</string>
-    <string name="first_notification">". Первое напоминание в "</string>
-    <string name="medicines_left">Осталось таблеток: </string>
+    <string name="medicine_name">Назва лекі</string>
+    <string name="medicine_times">Час прымання</string>
+    <string name="medicine_num_in_container">Засталося</string>
+    <string name="first_notification">". Першае нагадванне ў "</string>
+    <string name="medicines_left">Засталося лекаў: </string>
 
     <!--Strings for add_medicine_fragment.xml-->
-    <string name="medicine_form_info">Настройка уведомлений</string>
-    <string name="medicine_name_question">Название лекарства</string>
-    <string name="number_of_medicines_in_container_question">Таблеток в контейнере</string>
-    <string name="medicine_critical_number_question">Пороговое значение таблеток</string>
-    <string name="medicine_dose_question">Дозировка</string>
-    <string name="times_per_day_question">Раз в день:</string>
-    <string name="first_notification_time_question">Время первого уведомления:</string>
-    <string name="create_medicine_notification">Создать напоминание!</string>
-    <string name="update_medicine_notification">Обновить напоминание!</string>
-    <string name="stop_medicine_notification">Приостановить напоминание!</string>
-    <string name="continue_medicine_notification">Продолжить напоминание!</string>
-    <string name="delete_medicine_notification">Удалить напоминание!</string>
-    <string name="take_medicine_button">Принять</string>
-    <string name="delete_medicine_button">Удалить</string>
-    <string name="treatment">Уведомления</string>
-    <string name="stats">Статистика</string>
-    <string name="connection">Связь</string>
-    <string name="settings">Настройки</string>
-    <string name="container_form_info">Настройка контейнера</string>
-    <string name="cell_question">Ячейка</string>
+    <string name="medicine_form_info">Налады паведамленняў</string>
+    <string name="medicine_name_question">Назва лекі</string>
+    <string name="number_of_medicines_in_container_question">Таблетак у кантэйнеры</string>
+    <string name="medicine_critical_number_question">Парогавае значэнне таблетак</string>
+    <string name="medicine_dose_question">Доза</string>
+    <string name="times_per_day_question">Раз не дзень:</string>
+    <string name="first_notification_time_question">Час першага паведамлення:</string>
+    <string name="create_medicine_notification">Стварыць нагадванне!</string>
+    <string name="update_medicine_notification">Абнавіць нагадванне!</string>
+    <string name="stop_medicine_notification">Прыпыніць нагадванне!</string>
+    <string name="continue_medicine_notification">Працягнуць нагадванне!</string>
+    <string name="delete_medicine_notification">Выдаліць нагадванне!</string>
+    <string name="take_medicine_button">Прыняць</string>
+    <string name="delete_medicine_button">Выдаліць</string>
+    <string name="treatment">Паведамленні</string>
+    <string name="stats">Статыстыка</string>
+    <string name="connection">Сувязь</string>
+    <string name="settings">Налады</string>
+    <string name="container_form_info">Надала кантэйнера</string>
+    <string name="cell_question">Ячэйка</string>
 
     <!--Strings for spinner-->
     <string-array name="times_per_day">
-        <item>Один раз в день</item>
-        <item>Два раза в день</item>
-        <item>Три раза в день</item>
-        <item>Четыре раза в день</item>
+        <item>Адзін раз на дзень</item>
+        <item>Два разы на дзень</item>
+        <item>Тры разы на дзень</item>
+        <item>Чатыры разы на дзень</item>
     </string-array>
 
     <string-array name="cell_array">
-        <item>Ячейка 1</item>
-        <item>Ячейка 2</item>
-        <item>Ячейка 3</item>
-        <item>Ячейка 4</item>
-        <item>Ячейка 5</item>
-        <item>Ячейка 6</item>
-        <item>Ячейка 7</item>
+        <item>Ячэйка 1</item>
+        <item>Ячэйка 2</item>
+        <item>Ячэйка 3</item>
+        <item>Ячэйка 4</item>
+        <item>Ячэйка 5</item>
+        <item>Ячэйка 6</item>
+        <item>Ячэйка 7</item>
     </string-array>
 
     <!--Errors-->
@@ -91,6 +91,6 @@
     <string name="connected">Подключено!</string>
     <string name="disconnected">Отключено!</string>
 
-    <string name="change_take">Изменить или принять лекарство</string>
+    <string name="change_take">Change or take medicine</string>
     <string name="add_medicine">Создать напоминание</string>
 </resources>

@@ -20,9 +20,6 @@
     <string name="medicine_dose_question">Dose</string>
     <string name="times_per_day_question">Times per day:</string>
     <string name="first_notification_time_question">First notification at:</string>
-    <string name="second_notification_time_question">Second notification at:</string>
-    <string name="third_notification_time_question">Third notification at:</string>
-    <string name="fourth_notification_time_question">Fourth notification at:</string>
     <string name="create_medicine_notification">Create notification!</string>
     <string name="update_medicine_notification">Update notification!</string>
     <string name="stop_medicine_notification">Pause notification!</string>
@@ -30,7 +27,7 @@
     <string name="delete_medicine_notification">Delete notification!</string>
     <string name="take_medicine_button">Take</string>
     <string name="delete_medicine_button">Delete</string>
-    <string name="treatment">Treatment</string>
+    <string name="treatment">Notifications</string>
     <string name="stats">Statistics</string>
     <string name="connection">Connection</string>
     <string name="settings">Settings</string>
@@ -80,4 +77,20 @@
     <string name="zero_error">Not enough pills</string>
     <string name="container_question">Use container?</string>
     <string name="add_fab">Add</string>
+
+    <string name="cell_number">Cell</string>
+    <string name="mqtt_broker">MQTT broker</string>
+    <string name="port_number">Port number</string>
+    <string name="update_settings">Update settings</string>
+    <string name="mqtt_settings">MQTT Settings</string>
+    <string name="use_mqtt">Use MQTT?</string>
+    <string name="try_to_connect">Connect</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="taken_today">Taken today:</string>
+
+    <string name="connected">Connected!</string>
+    <string name="disconnected">Disconnected!</string>
+
+    <string name="change_take">Change or take medicine</string>
+    <string name="add_medicine">Add medicine</string>
 </resources>
